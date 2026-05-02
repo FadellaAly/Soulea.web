@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Souléa — Scent of Personality</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F2F7F2;
+  --warm:#F7FAF7;
+  --army:#4A5E45;
+  --army-light:#6B7F65;
+  --army-pale:#C8D8C4;
+  --gold:#B5A06A;
+  --gold-light:rgba(181,160,106,0.13);
+  --dark:#1C231B;
+  --dark2:#384035;
+  --muted:#7A8C75;
+  --border:rgba(74,94,69,0.18);
+  --serif:'Cormorant Garamond',serif;
+  --sans:'Jost',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--warm);color:var(--dark);overflow-x:hidden}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:1.3rem 3.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(247,250,247,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.logo{font-family:var(--serif);font-size:1.85rem;font-weight:300;letter-spacing:.18em;color:var(--dark);text-decoration:none;cursor:pointer}
+.logo span{color:var(--army)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer}
+.nav-links a:hover{color:var(--army)}
+.page{display:none}
+.page.active{display:block;animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;overflow:hidden;position:relative;}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 5.5rem;position:relative;z-index:2;}
+.eyebrow{font-size:.68rem;letter-spacing:.38em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1.8rem}
+.hero-title{font-family:var(--serif);font-size:clamp(3.2rem,5vw,6rem);font-weight:300;line-height:.92;color:var(--dark);margin-bottom:1.2rem}
+.hero-title em{font-style:italic;color:var(--army)}
+.hero-subtitle{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--muted);font-weight:300;margin-bottom:2rem}
+.hero-desc{font-size:.87rem;line-height:1.92;color:var(--dark2);font-weight:300;max-width:38ch;margin-bottom:3rem}
+.btn-army{display:inline-flex;align-items:center;gap:1rem;padding:1.05rem 2.4rem;background:var(--army);color:var(--cream);font-family:var(--sans);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;transition:background .3s,gap .3s;text-decoration:none;width:fit-content;}
+.btn-army:hover{background:var(--dark);gap:1.6rem}
+.btn-outline{display:inline-flex;align-items:center;gap:.8rem;padding:.95rem 2.2rem;background:transparent;color:var(--army);font-family:var(--sans);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;border:1px solid var(--army);cursor:pointer;transition:background .3s,color .3s;}
+.btn-outline:hover{background:var(--army);color:var(--cream)}
+.hero-right{position:relative;overflow:hidden;background:linear-gradient(145deg,#D8E8D4 0%,#C8DCCA 50%,#B8CCBA 100%);}
+.hero-right::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 55% 45%,rgba(74,94,69,.1) 0%,transparent 70%);pointer-events:none;}
+.hero-bottle-main{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;}
+.hero-bottle-main svg{filter:drop-shadow(0 20px 40px rgba(74,94,69,.2));animation:floatBottle 5s ease-in-out infinite;}
+@keyframes floatBottle{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-pills{position:absolute;top:2.5rem;right:2rem;z-index:5;display:flex;flex-direction:column;gap:.55rem;align-items:flex-end;}
+.h-pill{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;font-weight:300;padding:.3rem .85rem;border:1px solid rgba(74,94,69,.3);color:var(--army-light);background:rgba(247,250,247,.6);backdrop-filter:blur(4px);border-radius:100px;}
+.hero-badge{position:absolute;bottom:2.5rem;left:2.5rem;z-index:5;border:1px solid rgba(74,94,69,.25);padding:1.2rem 1.6rem;background:rgba(247,250,247,.8);backdrop-filter:blur(8px);text-align:center;}
+.badge-num{font-family:var(--serif);font-size:2.5rem;font-weight:300;color:var(--army);display:block;line-height:1}
+.badge-txt{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:300}
+.divider{display:flex;align-items:center;gap:1.5rem;padding:0 5.5rem}
+.divider-line{flex:1;height:1px;background:var(--border)}
+.about{padding:7rem 5.5rem;background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.about-label{font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1.2rem;display:block}
+.about-title{font-family:var(--serif);font-size:2.8rem;font-weight:300;line-height:1.1;color:var(--dark);margin-bottom:1.6rem}
+.about-title em{font-style:italic;color:var(--army)}
+.about-p{font-size:.87rem;line-height:1.95;color:var(--dark2);font-weight:300;margin-bottom:1rem}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.stat-box{border:1px solid var(--border);padding:1.8rem 1.5rem;text-align:center;background:var(--warm);transition:border-color .3s;}
+.stat-box:hover{border-color:var(--army)}
+.stat-num{font-family:var(--serif);font-size:3rem;font-weight:300;color:var(--army);display:block;line-height:1}
+.stat-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:300;margin-top:.5rem;display:block}
+.parfum-section{padding:7rem 5.5rem;background:var(--warm)}
+.section-head{text-align:center;margin-bottom:4.5rem}
+.section-head h2{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:var(--dark);line-height:1.05}
+.section-head h2 em{font-style:italic;color:var(--army)}
+.section-head p{max-width:50ch;margin:1.2rem auto 0;font-size:.87rem;line-height:1.85;color:var(--muted);font-weight:300}
+.parfum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem}
+.parfum-card{border:1px solid var(--border);background:var(--cream);overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s;}
+.parfum-card:hover{border-color:var(--army);transform:translateY(-5px)}
+.parfum-card-img{height:280px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.parfum-card-img svg{position:relative;z-index:2;transition:transform .4s ease;filter:drop-shadow(0 8px 20px rgba(0,0,0,.1));}
+.parfum-card:hover .parfum-card-img svg{transform:translateY(-6px) scale(1.04)}
+.parfum-card-body{padding:1.6rem 1.8rem 2rem}
+.parfum-card-body h3{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--dark);margin-bottom:.25rem}
+.card-persona{font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:var(--army);font-weight:300;display:block;margin-bottom:.8rem}
+.card-desc{font-size:.82rem;line-height:1.8;color:var(--dark2);font-weight:300}
+.card-mbti-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+.mbti-tag{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400;padding:.2rem .6rem;border:1px solid var(--border);color:var(--muted);border-radius:3px;}
+.cta-section{padding:8rem 5.5rem;background:var(--army);text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{content:'Souléa';font-family:var(--serif);font-size:18rem;font-weight:300;color:rgba(255,255,255,.04);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
+.cta-label{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army-pale);font-weight:300;margin-bottom:1.5rem;display:block}
+.cta-title{font-family:var(--serif);font-size:clamp(2.5rem,4vw,4.5rem);font-weight:300;color:#F2F7F2;line-height:1.05;margin-bottom:1.5rem}
+.cta-title em{font-style:italic;color:var(--army-pale)}
+.cta-desc{font-size:.88rem;line-height:1.85;color:rgba(242,247,242,.6);font-weight:300;max-width:46ch;margin:0 auto 3rem}
+.btn-cream{display:inline-flex;align-items:center;gap:1rem;padding:1.1rem 2.8rem;background:var(--cream);color:var(--army);font-family:var(--sans);font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;border:none;cursor:pointer;transition:all .3s;position:relative;z-index:1;}
+.btn-cream:hover{background:#fff;gap:1.6rem}
+footer{background:var(--dark);border-top:1px solid rgba(74,94,69,.2);padding:3rem 5.5rem;display:flex;justify-content:space-between;align-items:center;}
+.footer-logo{font-family:var(--serif);font-size:1.5rem;font-weight:300;letter-spacing:.18em;color:var(--cream)}
+.footer-logo span{color:var(--army-pale)}
+.footer-copy{font-size:.7rem;letter-spacing:.1em;color:rgba(242,247,242,.3);font-weight:300}
+.footer-tagline{font-family:var(--serif);font-style:italic;font-size:.95rem;color:rgba(200,216,196,.5);font-weight:300}
+/* QUIZ */
+.quiz-hero{min-height:38vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--cream);padding:8rem 2rem 4rem;position:relative;overflow:hidden;}
+.quiz-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(74,94,69,.1) 0%,transparent 70%);}
+.quiz-hero-label{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1rem;position:relative;z-index:1}
+.quiz-hero-title{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:var(--dark);line-height:1.05;position:relative;z-index:1}
+.quiz-hero-title em{font-style:italic;color:var(--army)}
+.quiz-hero-sub{font-size:.87rem;color:var(--muted);font-weight:300;margin-top:1rem;max-width:44ch;line-height:1.8;position:relative;z-index:1}
+.quiz-container{max-width:720px;margin:0 auto;padding:4rem 2rem 8rem}
+.quiz-progress-wrap{margin-bottom:2.5rem}
+.progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+.progress-q{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:300}
+.progress-num{font-family:var(--serif);font-size:1.3rem;color:var(--army);font-weight:300}
+.progress-bar-bg{width:100%;height:2px;background:var(--border)}
+.progress-bar-fill{height:100%;background:var(--army);transition:width .4s ease}
+.question-card{background:var(--cream);border:1px solid var(--border);padding:2.8rem;margin-bottom:1.5rem;}
+.q-num{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--army);font-weight:300;display:block;margin-bottom:.9rem}
+.q-text{font-family:var(--serif);font-size:1.65rem;font-weight:300;color:var(--dark);line-height:1.3;margin-bottom:2.2rem}
+.choices{display:flex;flex-direction:column;gap:.75rem}
+.choice-btn{padding:1.05rem 1.4rem;border:1px solid var(--border);background:var(--warm);font-family:var(--sans);font-size:.84rem;font-weight:300;line-height:1.5;color:var(--dark2);text-align:left;cursor:pointer;display:flex;align-items:flex-start;gap:.9rem;}
+.choice-btn:hover{border-color:rgba(74,94,69,.5);background:rgba(200,216,196,.2)}
+.choice-btn.selected{border-color:var(--army);background:rgba(200,216,196,.32);color:var(--dark)}
+.choice-letter{width:22px;height:22px;border:1px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:500;flex-shrink:0;margin-top:.06rem;opacity:.55;}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.8rem;border-top:1px solid var(--border)}
+.quiz-back{background:transparent;border:none;cursor:pointer;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:300;}
+.quiz-back:hover{color:var(--dark)}
+.quiz-back:disabled{opacity:.25;cursor:default}
+/* RESULT */
+.result-hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;overflow:hidden;}
+.result-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 5.5rem;}
+.result-label{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1rem;display:block}
+.result-mbti{font-family:var(--serif);font-size:5.5rem;font-weight:300;color:var(--dark);line-height:.85;letter-spacing:.08em;margin-bottom:.4rem}
+.result-type{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:var(--muted);margin-bottom:.5rem;font-weight:300}
+.result-parfum-name{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:var(--dark);line-height:1;margin-bottom:1.5rem}
+.result-parfum-name em{font-style:italic;color:var(--army)}
+.result-desc{font-size:.88rem;line-height:1.9;color:var(--dark2);font-weight:300;max-width:42ch;margin-bottom:2.2rem}
+.notes-label{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:.7rem;display:block}
+.notes-list{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:2.2rem}
+.note-tag{padding:.28rem .9rem;border:1px solid var(--border);font-size:.7rem;letter-spacing:.1em;color:var(--dark2);font-weight:300}
+.result-btns{display:flex;gap:1rem;flex-wrap:wrap}
+.result-right{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.result-bg{position:absolute;inset:0}
+.res-bottle-wrap{position:relative;z-index:3;text-align:center}
+.res-bottle-name{font-family:var(--serif);font-size:1.6rem;font-style:italic;font-weight:300;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.2);display:block;margin-top:1.2rem;}
+.res-bottle-mbti{display:inline-block;margin-top:.5rem;padding:.3rem 1rem;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#fff;font-weight:300;border-radius:100px;}
+/* Shop modal */
+.shop-modal-overlay{position:fixed;inset:0;background:rgba(28,35,27,.55);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.shop-modal-overlay.open{display:flex}
+.shop-modal{background:var(--warm);border:1px solid var(--border);padding:3rem;max-width:400px;width:90%;text-align:center;animation:fadeIn .3s ease;}
+.shop-modal h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);margin-bottom:.4rem}
+.shop-modal h3 em{font-style:italic;color:var(--army)}
+.shop-modal p{font-size:.85rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:2rem}
+.shop-btns{display:flex;flex-direction:column;gap:.8rem}
+.shop-btn{display:flex;align-items:center;justify-content:center;gap:.8rem;padding:1rem 1.5rem;border:1px solid var(--border);background:var(--cream);font-family:var(--sans);font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dark);font-weight:400;cursor:pointer;text-decoration:none;transition:border-color .25s,background .25s;}
+.shop-btn.shopee{border-color:#EE4D2D;color:#EE4D2D}
+.shop-btn.shopee:hover{background:rgba(238,77,45,.08)}
+.shop-btn.tiktok{border-color:#222;color:#222}
+.shop-btn.tiktok:hover{background:rgba(0,0,0,.05)}
+.shop-close{background:none;border:none;cursor:pointer;margin-top:1.2rem;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:300;}
+.other-parfums{padding:5rem 5.5rem;background:var(--cream)}
+.other-parfums h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);margin-bottom:.4rem}
+.other-parfums h3 em{font-style:italic;color:var(--army)}
+.other-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2rem}
+.other-card{border:1px solid var(--border);background:var(--warm);overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s;}
+.other-card:hover{border-color:var(--army);transform:translateY(-4px)}
+.other-card-top{height:130px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.other-card-body{padding:1rem 1.2rem 1.4rem}
+.other-card-body h4{font-family:var(--serif);font-size:1.1rem;font-weight:300;color:var(--dark);margin-bottom:.15rem}
+.other-card-body span{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--army);font-weight:300}
+.result-share{padding:4rem 5.5rem;background:var(--warm);text-align:center;border-top:1px solid var(--border)}
+.result-share h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);margin-bottom:.8rem}
+.result-share h3 em{font-style:italic;color:var(--army)}
+.result-share p{font-size:.87rem;color:var(--muted);font-weight:300;margin-bottom:1.8rem;max-width:38ch;margin-left:auto;margin-right:auto;line-height:1.8}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--warm)}
+::-webkit-scrollbar-thumb{background:var(--army);border-radius:2px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" onclick="showPage('home')">Soul<span>é</span>a</a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Beranda</a></li>
+    <li><a onclick="scrollToParfum()">Koleksi</a></li>
+    <li><a onclick="showPage('quiz');resetQuiz()">Temukan Scentmu</a></li>
+  </ul>
+</nav>
+
+<!-- SHOP MODAL -->
+<div class="shop-modal-overlay" id="shop-modal" onclick="closeShop(event)">
+  <div class="shop-modal">
+    <h3>Pesan <em>Souléa</em></h3>
+    <p>Pilih platform favoritmu untuk memesan parfum kepribadianmu.</p>
+    <div class="shop-btns">
+      <a href="https://shopee.co.id" target="_blank" class="shop-btn shopee">🛍&nbsp; Beli di Shopee</a>
+      <a href="https://www.tiktok.com/shop" target="_blank" class="shop-btn tiktok">♪&nbsp; Beli di TikTok Shop</a>
+    </div>
+    <button class="shop-close" onclick="document.getElementById('shop-modal').classList.remove('open')">Tutup ✕</button>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-left">
+      <p class="eyebrow">Scent of Personality</p>
+      <h1 class="hero-title">Kenal<br>dirimu<br><em>lebih dalam</em></h1>
+      <p class="hero-subtitle">Parfum yang berbicara tentang jiwamu</p>
+      <p class="hero-desc">Souléa lahir dari keyakinan bahwa setiap jiwa punya bahasa aroma tersendiri. Kami memadukan psikologi kepribadian MBTI dengan seni parfumeri eksklusif — enam varian untuk merayakan siapa dirimu.</p>
+      <button class="btn-army" onclick="showPage('quiz');resetQuiz()">Lihat Parfum Ku →</button>
+    </div>
+    <div class="hero-right">
+      <div class="hero-bottle-main" id="hero-bottle-main"></div>
+      <div class="hero-pills">
+        <span class="h-pill">Dream Muse</span>
+        <span class="h-pill">Power Move</span>
+        <span class="h-pill">Midnight Code</span>
+        <span class="h-pill">Chaos Bloom</span>
+        <span class="h-pill">Golden Bloom</span>
+        <span class="h-pill">Cool Drift</span>
+      </div>
+      <div class="hero-badge">
+        <span class="badge-num">16</span>
+        <span class="badge-txt">Tipe MBTI</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><div class="divider-line"></div><span style="color:var(--army);font-size:.9rem;opacity:.6">✦</span><div class="divider-line"></div></div>
+
+  <section class="about">
+    <div>
+      <span class="about-label">Tentang Souléa</span>
+      <h2 class="about-title">Aromamu adalah <em>cerminan jiwamu</em></h2>
+      <p class="about-p">Souléa percaya bahwa kepribadian bukan sekadar cara kita berpikir dan berperasaan — ia juga punya aroma. Terinspirasi dari framework Myers-Briggs, kami merancang setiap varian untuk menangkap esensi terdalam dari setiap tipe kepribadian.</p>
+      <p class="about-p">Dari si pemimpi yang lembut hingga si pemimpin yang tegas, dari si petualang bebas hingga si penjaga yang hangat — setiap jiwa ada parfumnya di Souléa.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box"><span class="stat-num">6</span><span class="stat-label">Varian Parfum</span></div>
+      <div class="stat-box"><span class="stat-num">16</span><span class="stat-label">Tipe MBTI</span></div>
+      <div class="stat-box"><span class="stat-num">10</span><span class="stat-label">Pertanyaan Jiwa</span></div>
+      <div class="stat-box"><span class="stat-num">1</span><span class="stat-label">Scentmu</span></div>
+    </div>
+  </section>
+
+  <section class="parfum-section" id="koleksi">
+    <div class="section-head">
+      <span class="about-label">Koleksi Eksklusif</span>
+      <h2>Enam <em>aroma</em>, satu untukmu</h2>
+      <p>Setiap parfum dirancang untuk meresapi karakter unik dari kepribadian MBTI yang berbeda.</p>
+    </div>
+    <div class="parfum-grid" id="parfum-grid"></div>
+  </section>
+
+  <section class="cta-section">
+    <span class="cta-label">Mulai Perjalananmu</span>
+    <h2 class="cta-title">Siap menemukan<br><em>aroma jiwamu?</em></h2>
+    <p class="cta-desc">Jawab 10 pertanyaan tentang kepribadianmu dan biarkan Souléa menemukan parfum yang paling merayakan dirimu yang sebenarnya.</p>
+    <button class="btn-cream" onclick="showPage('quiz');resetQuiz()">Mulai Tes Sekarang →</button>
+  </section>
+
+  <footer>
+    <span class="footer-logo">Soul<span>é</span>a</span>
+    <span class="footer-tagline">Scent of Personality</span>
+    <span class="footer-copy">© 2025 Souléa. Semua hak dilindungi.</span>
+  </footer>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+  <div class="quiz-hero">
+    <p class="quiz-hero-label">Tes Kepribadian Souléa</p>
+    <h1 class="quiz-hero-title">Temukan <em>Scentmu</em></h1>
+    <p class="quiz-hero-sub">Jawab 10 pertanyaan jujur. Tidak ada jawaban benar atau salah — hanya dirimu yang asli.</p>
+  </div>
+  <div class="quiz-container">
+    <div class="quiz-progress-wrap">
+      <div class="progress-info">
+        <span class="progress-q">Pertanyaan</span>
+        <span class="progress-num" id="prog-num">1 / 10</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-bar" style="width:10%"></div></div>
+    </div>
+    <div id="quiz-card-wrap"></div>
+    <div class="quiz-nav">
+      <button class="quiz-back" id="btn-back" onclick="quizBack()" disabled>← Sebelumnya</button>
+      <button class="btn-army" id="btn-next" onclick="quizNext()">Selanjutnya →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="page-result" class="page">
+  <div class="result-hero">
+    <div class="result-left">
+      <span class="result-label">Parfum Jiwamu</span>
+      <div class="result-mbti" id="res-mbti">INFP</div>
+      <div class="result-type" id="res-type">Sensitive Idealist</div>
+      <div class="result-parfum-name" id="res-name"></div>
+      <p class="result-desc" id="res-desc"></p>
+      <span class="notes-label">Aroma Utama</span>
+      <div class="notes-list" id="res-notes"></div>
+      <div class="result-btns">
+        <button class="btn-army" onclick="document.getElementById('shop-modal').classList.add('open')">Pesan Sekarang →</button>
+        <button class="btn-outline" onclick="showPage('quiz');resetQuiz()">Ulangi Tes</button>
+      </div>
+    </div>
+    <div class="result-right">
+      <div class="result-bg" id="res-bg"></div>
+      <div class="res-bottle-wrap">
+        <div id="res-bottle-svg"></div>
+        <span class="res-bottle-name" id="res-bottle-name"></span>
+        <span class="res-bottle-mbti" id="res-circle"></span>
+      </div>
+    </div>
+  </div>
+  <div class="result-share">
+    <h3>Cocok banget? <em>Ceritakan pada dunia</em></h3>
+    <p>Bagikan hasilmu dan ajak teman menemukan parfum kepribadian mereka sendiri.</p>
+    <button class="btn-army" onclick="shareResult()">Bagikan Hasilku →</button>
+  </div>
+  <div class="other-parfums">
+    <h3>Eksplorasi koleksi <em>lainnya</em></h3>
+    <p style="font-size:.85rem;color:var(--muted);font-weight:300">Ingin tahu parfum untuk kepribadian lain? Jelajahi semua varian Souléa.</p>
+    <div class="other-grid" id="other-grid"></div>
+  </div>
+  <footer>
+    <span class="footer-logo">Soul<span>é</span>a</span>
+    <span class="footer-tagline">Scent of Personality</span>
+    <span class="footer-copy">© 2025 Souléa</span>
+  </footer>
+</div>
+
+<script>
+// ── BOTTLE SVG GENERATOR ──
+function bottleSVG(key, w){
+  const C={
+    'Dream Muse':{cap:'#D4A8C0',neck:'#EEE6F8',body:'#EDE6F5',wash:'rgba(200,170,232,.5)',lb:'rgba(255,255,255,.62)',t1:'#6B3CA8',t2:'#9870C4',sp:'#C9B4E8',g1:'#EDE6F5',g2:'#C4B0E4',n1:'Dream',n2:'Muse',mb:'INFP · INFJ'},
+    'Power Move':{cap:'#D4A030',neck:'#F5EAC0',body:'#FBF3DC',wash:'rgba(230,200,100,.5)',lb:'rgba(255,255,255,.62)',t1:'#7A5010',t2:'#B87820',sp:'#E8CF80',g1:'#FBF3DC',g2:'#E8CF80',n1:'Power',n2:'Move',mb:'ENTJ · ESTJ'},
+    'Midnight Code':{cap:'#A8A8C8',neck:'#D8D4EC',body:'#E4E0F4',wash:'rgba(148,132,204,.5)',lb:'rgba(255,255,255,.55)',t1:'#2A1B54',t2:'#5A4A8A',sp:'#A094CC',g1:'#E0DCEF',g2:'#A094CC',n1:'Midnight',n2:'Code',mb:'INTJ · INTP'},
+    'Chaos Bloom':{cap:'#E87828',neck:'#FAD8C0',body:'#FDE8DA',wash:'rgba(240,160,100,.5)',lb:'rgba(255,255,255,.62)',t1:'#8A2800',t2:'#C44010',sp:'#F2A882',g1:'#FDE8DA',g2:'#F2A882',n1:'Chaos',n2:'Bloom',mb:'ENFP · ENTP'},
+    'Golden Bloom':{cap:'#C49030',neck:'#F5EAC0',body:'#FDF4DC',wash:'rgba(230,200,110,.5)',lb:'rgba(255,255,255,.62)',t1:'#6A4000',t2:'#A07010',sp:'#E8CE88',g1:'#FDF4DC',g2:'#E8CE88',n1:'Golden',n2:'Bloom',mb:'ENFJ · ESFJ'},
+    'Cool Drift':{cap:'#90C0D0',neck:'#C8E8F4',body:'#D8EEF5',wash:'rgba(100,190,225,.5)',lb:'rgba(255,255,255,.62)',t1:'#0C4A60',t2:'#2A7A9A',sp:'#88C8E0',g1:'#D8EEF5',g2:'#88C8E0',n1:'Cool',n2:'Drift',mb:'ISTP · ISFP'}
+  };
+  const c=C[key];if(!c)return'';
+  const id=key.replace(/\s+/g,'_');
+  return `<svg viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" width="${w}" style="display:block">
+  <defs>
+    <linearGradient id="g${id}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${c.g1}"/>
+      <stop offset="100%" stop-color="${c.g2}" stop-opacity=".85"/>
+    </linearGradient>
+    <linearGradient id="sh${id}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(255,255,255,.55)"/>
+      <stop offset="45%" stop-color="rgba(255,255,255,.0)"/>
+    </linearGradient>
+  </defs>
+  <rect x="75" y="44" width="50" height="14" rx="7" fill="${c.cap}"/>
+  <rect x="85" y="55" width="30" height="27" rx="4" fill="${c.neck}"/>
+  <rect x="50" y="79" width="100" height="198" rx="17" fill="${c.body}"/>
+  <rect x="58" y="87" width="84" height="182" rx="13" fill="url(#g${id})"/>
+  <rect x="58" y="87" width="30" height="182" rx="13" fill="url(#sh${id})" opacity=".7"/>
+  <rect x="63" y="137" width="74" height="88" rx="9" fill="${c.lb}"/>
+  <text x="100" y="127" text-anchor="middle" font-family="Georgia,serif" font-size="7" fill="${c.t2}" letter-spacing="3" opacity=".75">SOULÉA</text>
+  <text x="100" y="163" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" fill="${c.t1}" font-style="italic">${c.n1}</text>
+  <text x="100" y="179" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" fill="${c.t1}" font-style="italic">${c.n2}</text>
+  <text x="100" y="200" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" fill="${c.t2}" letter-spacing="1.5">${c.mb}</text>
+  <circle cx="68" cy="106" r="2.2" fill="${c.sp}" opacity=".7"/>
+  <circle cx="132" cy="100" r="1.8" fill="${c.sp}" opacity=".6"/>
+  <circle cx="136" cy="252" r="2" fill="${c.sp}" opacity=".5"/>
+  <circle cx="64" cy="238" r="1.5" fill="${c.sp}" opacity=".55"/>
+  <circle cx="100" cy="94" r="1.3" fill="${c.sp}" opacity=".45"/>
+  <ellipse cx="100" cy="277" rx="44" ry="5" fill="${c.g2}" opacity=".18"/>
+</svg>`;
+}
+
+// ── DATA ──
+const PARFUMS={
+  'Dream Muse':{mbtiList:['INFP','INFJ'],persona:'Sensitive Idealist',
+    desc:'Seperti halaman buku yang belum selesai ditulis — penuh kemungkinan, penuh perasaan. Dream Muse adalah parfum untuk jiwa yang bermimpi dengan matanya terbuka, yang merasakan dunia lebih dalam dari yang terlihat.',
+    notes:['Violet','White Musk','Orris','Vetiver','Vanilla'],
+    bg:'linear-gradient(145deg,#E8DCFA 0%,#CDB8EC 55%,#A890D8 100%)',cardBg:'#EDE6F5'},
+  'Power Move':{mbtiList:['ENTJ','ESTJ'],persona:'Driven Leader',
+    desc:'Aroma ambisi yang membara. Power Move adalah parfum untuk mereka yang masuk ke ruangan dan langsung menjadi pusat gravitasi. Tegas, berkilau, tak tergoyahkan — seperti emas murni yang tak pernah pudar.',
+    notes:['Black Pepper','Bergamot','Oud','Amber','Sandalwood'],
+    bg:'linear-gradient(145deg,#F8F0C8 0%,#E8D080 55%,#D0A840 100%)',cardBg:'#FBF3DC'},
+  'Midnight Code':{mbtiList:['INTJ','INTP'],persona:'Strategic Mastermind',
+    desc:'Di balik keheningan malam, pikiran yang paling tajam bekerja. Midnight Code adalah aroma bagi jiwa yang melihat pola di balik kekacauan, yang berbicara lewat karya bukan kata-kata. Misterius, mendalam, tak tertebak.',
+    notes:['Dark Woods','Smoke','Cedarwood','Musk','Black Iris'],
+    bg:'linear-gradient(145deg,#D8D4F0 0%,#A898D8 55%,#7060B8 100%)',cardBg:'#E4E0F4'},
+  'Chaos Bloom':{mbtiList:['ENFP','ENTP'],persona:'Spontaneous Inspirer',
+    desc:'Hidup adalah pesta yang belum berakhir. Chaos Bloom meledak seperti kembang api — penuh warna, penuh energi, tak pernah sama dua kali. Untuk jiwa yang percaya aturan hanyalah titik awal kreativitas.',
+    notes:['Wild Jasmine','Orange Blossom','Saffron','Patchouli','Citrus'],
+    bg:'linear-gradient(145deg,#FEE8D0 0%,#F4A870 55%,#D86828 100%)',cardBg:'#FDE8DA'},
+  'Golden Bloom':{mbtiList:['ENFJ','ESFJ','ISFJ'],persona:'Caring Host',
+    desc:'Kehangatan yang memelukmu tanpa syarat. Golden Bloom adalah parfum para penjaga — mereka yang membuat orang lain merasa aman, dicintai, dan dihargai. Manis namun berkelas, seperti bunga yang mekar di bawah sinar emas.',
+    notes:['Magnolia','Warm Vanilla','Ylang-ylang','Peach','White Tea'],
+    bg:'linear-gradient(145deg,#FDF4D0 0%,#ECD078 55%,#C8A030 100%)',cardBg:'#FDF4DC'},
+  'Cool Drift':{mbtiList:['ISTP','ISFP','ESTP','ESFP','ISTJ'],persona:'Independent Craftsman',
+    desc:'Bebas seperti angin yang tak bisa dipegang. Cool Drift adalah parfum para individualis — yang menjalani hidup dengan tangan mereka sendiri, yang bicara lewat aksi bukan janji. Segar, jernih, dan tanpa basa-basi.',
+    notes:['Sea Breeze','Eucalyptus','Aqua Minerals','Driftwood','Light Musk'],
+    bg:'linear-gradient(145deg,#CCE8F8 0%,#78C4E0 55%,#3090B8 100%)',cardBg:'#D8EEF5'}
+};
+
+const MBTI_MAP={};
+Object.entries(PARFUMS).forEach(([n,d])=>d.mbtiList.forEach(m=>MBTI_MAP[m]=n));
+
+// ── 10 QUESTIONS ──
+const QS=[
+  {t:'Setelah hari panjang yang melelahkan, cara terbaikmu memulihkan energi adalah...',
+   c:[{t:'Sendirian — istirahat, merenung, atau melakukan hobi favoritmu',d:'I'},{t:'Berkumpul dengan orang-orang — bercerita dan tertawa bersama',d:'E'}]},
+  {t:'Di acara sosial yang ramai, kamu biasanya...',
+   c:[{t:'Nyaman mengobrol dalam, tapi lebih suka kelompok kecil',d:'I'},{t:'Menikmati bertemu banyak orang baru dan jadi pusat energi ruangan',d:'E'}]},
+  {t:'Ketika membuat keputusan penting, kamu lebih mengandalkan...',
+   c:[{t:'Fakta konkret dan hal-hal yang bisa dibuktikan secara nyata',d:'S'},{t:'Intuisi dan gambaran besar yang kamu rasakan secara mendalam',d:'N'}]},
+  {t:'Kamu lebih tertarik pada...',
+   c:[{t:'Hal-hal praktis dan langkah nyata yang bisa langsung dilakukan',d:'S'},{t:'Ide-ide besar, teori, dan kemungkinan yang belum pernah dicoba',d:'N'}]},
+  {t:'Saat temanmu bercerita tentang masalah, kamu otomatis...',
+   c:[{t:'Menawarkan solusi dan langkah-langkah konkret yang bisa mereka coba',d:'T'},{t:'Mendengarkan dengan penuh empati, membuat mereka merasa dipahami',d:'F'}]},
+  {t:'Dalam mengambil keputusan, kamu lebih mengutamakan...',
+   c:[{t:'Logika dan konsekuensi paling rasional secara objektif',d:'T'},{t:'Perasaan dan dampaknya terhadap semua orang yang terlibat',d:'F'}]},
+  {t:'Soal rencana dan jadwal, kamu tipe yang...',
+   c:[{t:'Suka merencanakan jauh-jauh hari dan mematuhi deadline dengan ketat',d:'J'},{t:'Lebih suka fleksibel, bisa berubah sesuai mood dan situasi',d:'P'}]},
+  {t:'Cara kamu bekerja yang paling nyaman adalah...',
+   c:[{t:'Menyelesaikan satu hal sampai tuntas sebelum pindah ke hal berikutnya',d:'J'},{t:'Mengerjakan beberapa hal sekaligus dan beralih sesuai energi',d:'P'}]},
+  {t:'Versi liburan idealmu adalah...',
+   c:[{t:'Itinerary matang, hotel sudah booking, semua terencana dengan baik',d:'J'},{t:'Tiket saja, sisanya improvisasi — kejutan adalah bagian dari serunya',d:'P'}]},
+  {t:'Di antara kalimat ini, mana yang paling menggambarkanmu?',
+   c:[{t:'Saya berkembang dalam kedalaman — sedikit hubungan tapi sangat bermakna',d:'I'},{t:'Saya berkembang dalam koneksi — semakin banyak orang, semakin hidup rasanya',d:'E'}]}
+];
+
+// ── QUIZ STATE ──
+let curQ=0,ans=[];
+
+function calcMBTI(a){
+  const c={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  a.forEach(d=>c[d]=(c[d]||0)+1);
+  return(c.E>=c.I?'E':'I')+(c.S>=c.N?'S':'N')+(c.T>=c.F?'T':'F')+(c.J>=c.P?'J':'P');
+}
+
+function renderQ(){
+  const q=QS[curQ],sel=ans[curQ];
+  document.getElementById('quiz-card-wrap').innerHTML=`
+    <div class="question-card">
+      <span class="q-num">Pertanyaan ${curQ+1} dari ${QS.length}</span>
+      <p class="q-text">${q.t}</p>
+      <div class="choices">
+        ${q.c.map((ch,i)=>`<button class="choice-btn${sel===ch.d?' selected':''}" onclick="pick('${ch.d}')">
+          <span class="choice-letter">${String.fromCharCode(65+i)}</span><span>${ch.t}</span>
+        </button>`).join('')}
+      </div>
+    </div>`;
+  document.getElementById('prog-num').textContent=`${curQ+1} / ${QS.length}`;
+  document.getElementById('prog-bar').style.width=`${((curQ+1)/QS.length)*100}%`;
+  document.getElementById('btn-back').disabled=curQ===0;
+  document.getElementById('btn-next').textContent=curQ===QS.length-1?'Lihat Hasilku ✦':'Selanjutnya →';
+}
+
+function pick(d){
+  ans[curQ]=d;
+  document.querySelectorAll('.choice-btn').forEach((btn,i)=>{
+    btn.classList.toggle('selected',QS[curQ].c[i].d===d);
+  });
+}
+
+function quizNext(){
+  if(!ans[curQ]){
+    document.querySelectorAll('.choice-btn').forEach(b=>{b.style.outline='1px solid rgba(74,94,69,.6)';setTimeout(()=>b.style.outline='',700)});
+    return;
+  }
+  if(curQ<QS.length-1){curQ++;renderQ();document.querySelector('.quiz-container').scrollIntoView({behavior:'smooth',block:'start'});}
+  else showResult();
+}
+function quizBack(){if(curQ>0){curQ--;renderQ();}}
+function resetQuiz(){curQ=0;ans=[];renderQ();}
+
+function showResult(){
+  const mbti=calcMBTI(ans);
+  const pname=MBTI_MAP[mbti]||'Dream Muse';
+  const p=PARFUMS[pname];
+  document.getElementById('res-mbti').textContent=mbti;
+  document.getElementById('res-type').textContent=p.persona;
+  document.getElementById('res-name').innerHTML=`<em>${pname}</em>`;
+  document.getElementById('res-desc').textContent=p.desc;
+  document.getElementById('res-notes').innerHTML=p.notes.map(n=>`<span class="note-tag">${n}</span>`).join('');
+  document.getElementById('res-bg').style.background=p.bg;
+  document.getElementById('res-bottle-name').textContent=pname;
+  document.getElementById('res-circle').textContent=mbti;
+  document.getElementById('res-bottle-svg').innerHTML=bottleSVG(pname,200);
+  const others=Object.entries(PARFUMS).filter(([n])=>n!==pname).slice(0,3);
+  document.getElementById('other-grid').innerHTML=others.map(([n,d])=>`
+    <div class="other-card">
+      <div class="other-card-top" style="background:${d.bg}">${bottleSVG(n,58)}</div>
+      <div class="other-card-body"><h4>${n}</h4><span>${d.mbtiList.join(' · ')}</span></div>
+    </div>`).join('');
+  showPage('result');
+}
+
+function shareResult(){
+  const mbti=document.getElementById('res-mbti').textContent;
+  const name=document.getElementById('res-bottle-name').textContent;
+  const txt=`Tipe MBTI-ku ${mbti} dan parfum Souléa untukku adalah "${name}"! ✨ Temukan parfum kepribadianmu juga 🌿`;
+  if(navigator.share)navigator.share({title:'Souléa',text:txt,url:window.location.href});
+  else{navigator.clipboard?.writeText(txt);alert('Teks disalin ke clipboard!');}
+}
+
+function closeShop(e){if(e.target.id==='shop-modal')document.getElementById('shop-modal').classList.remove('open');}
+
+function renderGrid(){
+  const grid=document.getElementById('parfum-grid');
+  if(!grid)return;
+  grid.innerHTML=Object.entries(PARFUMS).map(([name,p])=>`
+    <div class="parfum-card" onclick="showPage('quiz');resetQuiz()">
+      <div class="parfum-card-img" style="background:${p.cardBg}">${bottleSVG(name,130)}</div>
+      <div class="parfum-card-body">
+        <h3>${name}</h3>
+        <span class="card-persona">${p.persona}</span>
+        <p class="card-desc">${p.desc.substring(0,108)}…</p>
+        <div class="card-mbti-list">${p.mbtiList.map(m=>`<span class="mbti-tag">${m}</span>`).join('')}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderHeroBottle(){
+  const el=document.getElementById('hero-bottle-main');
+  if(el){
+    const svg=bottleSVG('Dream Muse',260);
+    el.innerHTML=`<div style="filter:drop-shadow(0 20px 40px rgba(74,94,69,.2));animation:floatBottle 5s ease-in-out infinite">${svg}</div>`;
+  }
+}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(name==='home'){renderGrid();renderHeroBottle();}
+}
+
+function scrollToParfum(){
+  showPage('home');
+  setTimeout(()=>document.getElementById('koleksi')?.scrollIntoView({behavior:'smooth'}),150);
+}
+
+renderGrid();
+renderHeroBottle();
+</script>
+</body>
+</html>
