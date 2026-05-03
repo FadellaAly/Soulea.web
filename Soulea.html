@@ -2,551 +2,957 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Souléa — Scent of Personality</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --cream:#F2F7F2;
-  --warm:#F7FAF7;
-  --army:#4A5E45;
-  --army-light:#6B7F65;
-  --army-pale:#C8D8C4;
-  --gold:#B5A06A;
-  --gold-light:rgba(181,160,106,0.13);
-  --dark:#1C231B;
-  --dark2:#384035;
-  --muted:#7A8C75;
-  --border:rgba(74,94,69,0.18);
+  --cream:#F5F2EC;
+  --warm:#FAFAF7;
+  --army:#6B7F5E;
+  --army-light:#E8EDE5;
+  --army-mid:#9DAF8E;
+  --gold:#B8A060;
+  --dark:#1C1A15;
+  --dark2:#3A3528;
+  --muted:#7A7468;
+  --border:rgba(107,127,94,0.18);
   --serif:'Cormorant Garamond',serif;
   --sans:'Jost',sans-serif;
+  --nav-h:58px;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--sans);background:var(--warm);color:var(--dark);overflow-x:hidden}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--sans);background:var(--warm);color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-thumb{background:var(--army);border-radius:2px}
+img{max-width:100%;display:block}
+
+/* ─── NAV ─── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  padding:1.3rem 3.5rem;
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:var(--nav-h);
+  padding:0 1.2rem;
   display:flex;justify-content:space-between;align-items:center;
-  background:rgba(247,250,247,0.92);backdrop-filter:blur(16px);
+  background:rgba(250,250,247,0.95);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
 }
-.logo{font-family:var(--serif);font-size:1.85rem;font-weight:300;letter-spacing:.18em;color:var(--dark);text-decoration:none;cursor:pointer}
-.logo span{color:var(--army)}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
-.nav-links a{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer}
-.nav-links a:hover{color:var(--army)}
+.logo{font-family:var(--serif);font-size:1.55rem;font-weight:300;letter-spacing:.14em;color:var(--dark);cursor:pointer;user-select:none}
+.logo .ac{color:var(--army)}
+.nav-right{display:flex;align-items:center;gap:.6rem}
+.nav-quiz-btn{
+  padding:.5rem 1rem;background:var(--army);color:#fff;
+  font-family:var(--sans);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400;
+  border:none;cursor:pointer;border-radius:2px;white-space:nowrap;
+}
+.hamburger{
+  width:36px;height:36px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  background:none;border:none;cursor:pointer;padding:4px;
+}
+.hamburger span{width:20px;height:1.5px;background:var(--dark);display:block;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* Mobile menu */
+.mobile-menu{
+  position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;z-index:290;
+  background:rgba(250,250,247,.98);backdrop-filter:blur(20px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  transform:translateY(-100%);transition:transform .38s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;
+}
+.mobile-menu.open{transform:translateY(0);pointer-events:all}
+.mobile-menu a{
+  font-family:var(--serif);font-size:2.2rem;font-weight:300;letter-spacing:.08em;
+  color:var(--dark);cursor:pointer;
+}
+.mobile-menu a:active{color:var(--army)}
+
+/* ─── PAGES ─── */
 .page{display:none}
-.page.active{display:block;animation:fadeIn .5s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;overflow:hidden;position:relative;}
-.hero-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 5.5rem;position:relative;z-index:2;}
-.eyebrow{font-size:.68rem;letter-spacing:.38em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1.8rem}
-.hero-title{font-family:var(--serif);font-size:clamp(3.2rem,5vw,6rem);font-weight:300;line-height:.92;color:var(--dark);margin-bottom:1.2rem}
+.page.active{display:block;animation:pgIn .4s ease both}
+@keyframes pgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── BUTTONS ─── */
+.btn-army{display:inline-flex;align-items:center;justify-content:center;gap:.7rem;padding:.9rem 1.8rem;background:var(--army);color:#fff;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;border-radius:2px;touch-action:manipulation}
+.btn-army:active{background:#4d5e42}
+.btn-outline{display:inline-flex;align-items:center;justify-content:center;gap:.7rem;padding:.85rem 1.6rem;background:transparent;color:var(--dark);font-family:var(--sans);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:400;border:1.5px solid var(--army);cursor:pointer;border-radius:2px;touch-action:manipulation}
+.btn-outline:active{background:var(--army);color:#fff}
+.btn-dark{display:inline-flex;align-items:center;justify-content:center;gap:.7rem;padding:.9rem 1.8rem;background:var(--dark);color:var(--cream);font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;border-radius:2px;touch-action:manipulation}
+.btn-dark:active{background:var(--army)}
+.btn-shopee{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.85rem 1.4rem;background:#EE4D2D;color:#fff;font-family:var(--sans);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;text-decoration:none;border-radius:2px;flex:1;touch-action:manipulation}
+.btn-shopee:active{background:#c83e22}
+.btn-tiktok{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.85rem 1.4rem;background:#111;color:#fff;font-family:var(--sans);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;text-decoration:none;border-radius:2px;flex:1;touch-action:manipulation}
+.btn-tiktok:active{background:#333}
+
+/* ════════ HOME — HERO ════════ */
+.hero{
+  min-height:100svh;padding-top:var(--nav-h);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  background:var(--warm);
+}
+
+/* Visual panel — bottles on top for mobile */
+.hero-visual{
+  width:100%;height:48vw;min-height:200px;max-height:300px;
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.hv-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg,#dce8d5 0%,#c8dbc0 50%,#b8cfa8 100%);
+}
+.hv-orb{position:absolute;border-radius:50%;filter:blur(30px);pointer-events:none}
+.orb1{width:200px;height:200px;background:rgba(196,180,230,.35);top:-20%;left:-10%;animation:orbf 8s ease-in-out infinite}
+.orb2{width:160px;height:160px;background:rgba(240,200,120,.3);bottom:-10%;right:-5%;animation:orbf 10s ease-in-out infinite reverse}
+.orb3{width:120px;height:120px;background:rgba(200,230,240,.35);top:30%;left:55%;animation:orbf 7s ease-in-out infinite 1.5s}
+@keyframes orbf{0%,100%{transform:translate(0,0)}50%{transform:translate(10px,-15px)}}
+.hv-sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hv-bottles{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  gap:4px;padding:.8rem 1rem 1rem;
+  z-index:3;
+}
+.hv-bottle-item{
+  display:flex;flex-direction:column;align-items:center;
+  animation:bfloat 7s ease-in-out infinite;
+}
+.hv-bottle-item:nth-child(2){animation-delay:.6s;margin-bottom:8px}
+.hv-bottle-item:nth-child(3){animation-delay:1.2s}
+.hv-bottle-item:nth-child(4){animation-delay:1.8s;margin-bottom:12px}
+.hv-bottle-item:nth-child(5){animation-delay:2.4s}
+.hv-bottle-item:nth-child(6){animation-delay:3s;margin-bottom:6px}
+@keyframes bfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hv-ghost{
+  position:absolute;bottom:-20px;right:-10px;
+  font-family:var(--serif);font-size:10rem;font-weight:300;
+  color:rgba(255,255,255,.1);line-height:1;user-select:none;pointer-events:none;
+}
+/* Floral */
+.hv-floral{position:absolute;pointer-events:none;opacity:.15}
+.hv-fl1{top:-5%;left:0;width:100px;animation:fsway 12s ease-in-out infinite}
+.hv-fl2{bottom:-5%;right:0;width:90px;animation:fsway 14s ease-in-out infinite reverse}
+@keyframes fsway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.hv-badge{
+  position:absolute;bottom:12px;left:12px;z-index:5;
+  padding:.6rem 1rem;background:rgba(250,250,247,.85);backdrop-filter:blur(10px);
+  border:1px solid rgba(107,127,94,.25);text-align:center;
+}
+.hv-badge-n{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:var(--army);display:block;line-height:1}
+.hv-badge-t{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:300}
+
+/* Hero text */
+.hero-text{
+  padding:1.8rem 1.4rem 2.2rem;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;
+  position:relative;
+}
+.hero-text::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle 120px at 85% 20%,rgba(196,180,230,.2) 0%,transparent 70%),
+    radial-gradient(circle 80px at 5% 80%,rgba(157,175,142,.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.eyebrow{font-size:.62rem;letter-spacing:.38em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem;justify-content:center}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--army)}
+.hero-title{font-family:var(--serif);font-size:clamp(3rem,11vw,5rem);font-weight:300;line-height:.9;letter-spacing:-.01em;color:var(--dark);margin-bottom:1rem;position:relative;z-index:1}
 .hero-title em{font-style:italic;color:var(--army)}
-.hero-subtitle{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--muted);font-weight:300;margin-bottom:2rem}
-.hero-desc{font-size:.87rem;line-height:1.92;color:var(--dark2);font-weight:300;max-width:38ch;margin-bottom:3rem}
-.btn-army{display:inline-flex;align-items:center;gap:1rem;padding:1.05rem 2.4rem;background:var(--army);color:var(--cream);font-family:var(--sans);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;font-weight:400;border:none;cursor:pointer;transition:background .3s,gap .3s;text-decoration:none;width:fit-content;}
-.btn-army:hover{background:var(--dark);gap:1.6rem}
-.btn-outline{display:inline-flex;align-items:center;gap:.8rem;padding:.95rem 2.2rem;background:transparent;color:var(--army);font-family:var(--sans);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;border:1px solid var(--army);cursor:pointer;transition:background .3s,color .3s;}
-.btn-outline:hover{background:var(--army);color:var(--cream)}
-.hero-right{position:relative;overflow:hidden;background:linear-gradient(145deg,#D8E8D4 0%,#C8DCCA 50%,#B8CCBA 100%);}
-.hero-right::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 55% 45%,rgba(74,94,69,.1) 0%,transparent 70%);pointer-events:none;}
-.hero-bottle-main{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;}
-.hero-bottle-main svg{filter:drop-shadow(0 20px 40px rgba(74,94,69,.2));animation:floatBottle 5s ease-in-out infinite;}
-@keyframes floatBottle{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.hero-pills{position:absolute;top:2.5rem;right:2rem;z-index:5;display:flex;flex-direction:column;gap:.55rem;align-items:flex-end;}
-.h-pill{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;font-weight:300;padding:.3rem .85rem;border:1px solid rgba(74,94,69,.3);color:var(--army-light);background:rgba(247,250,247,.6);backdrop-filter:blur(4px);border-radius:100px;}
-.hero-badge{position:absolute;bottom:2.5rem;left:2.5rem;z-index:5;border:1px solid rgba(74,94,69,.25);padding:1.2rem 1.6rem;background:rgba(247,250,247,.8);backdrop-filter:blur(8px);text-align:center;}
-.badge-num{font-family:var(--serif);font-size:2.5rem;font-weight:300;color:var(--army);display:block;line-height:1}
-.badge-txt{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:300}
-.divider{display:flex;align-items:center;gap:1.5rem;padding:0 5.5rem}
-.divider-line{flex:1;height:1px;background:var(--border)}
-.about{padding:7rem 5.5rem;background:var(--cream);display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
-.about-label{font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1.2rem;display:block}
-.about-title{font-family:var(--serif);font-size:2.8rem;font-weight:300;line-height:1.1;color:var(--dark);margin-bottom:1.6rem}
+.hero-sub{font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--muted);font-weight:300;margin-bottom:1rem;position:relative;z-index:1}
+.hero-desc{font-size:.82rem;line-height:1.9;color:var(--dark2);font-weight:300;margin-bottom:1.8rem;position:relative;z-index:1;max-width:50ch}
+.hero-cta-row{display:flex;gap:.8rem;flex-wrap:wrap;position:relative;z-index:1;justify-content:center}
+
+/* ─── DIVIDER ─── */
+.divider{display:flex;align-items:center;gap:1rem;padding:0 1.4rem}
+.dl{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.dd{color:var(--army);font-size:.75rem;opacity:.55}
+
+/* ─── ABOUT ─── */
+.about{padding:3.5rem 1.4rem;background:var(--army-light);position:relative;overflow:hidden}
+.about::before{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(107,127,94,.1) 0%,transparent 70%);pointer-events:none}
+.sl{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:.9rem;display:block}
+.about-title{font-family:var(--serif);font-size:clamp(1.8rem,7vw,2.8rem);font-weight:300;line-height:1.1;color:var(--dark);margin-bottom:1.2rem}
 .about-title em{font-style:italic;color:var(--army)}
-.about-p{font-size:.87rem;line-height:1.95;color:var(--dark2);font-weight:300;margin-bottom:1rem}
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
-.stat-box{border:1px solid var(--border);padding:1.8rem 1.5rem;text-align:center;background:var(--warm);transition:border-color .3s;}
-.stat-box:hover{border-color:var(--army)}
-.stat-num{font-family:var(--serif);font-size:3rem;font-weight:300;color:var(--army);display:block;line-height:1}
-.stat-label{font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:300;margin-top:.5rem;display:block}
-.parfum-section{padding:7rem 5.5rem;background:var(--warm)}
-.section-head{text-align:center;margin-bottom:4.5rem}
-.section-head h2{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:var(--dark);line-height:1.05}
+.about-p{font-size:.82rem;line-height:1.9;color:var(--dark2);font-weight:300;margin-bottom:.8rem}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:2rem}
+.stat-box{padding:1.4rem 1rem;text-align:center;background:rgba(255,255,255,.65);border:1px solid rgba(107,127,94,.15)}
+.sn{font-family:var(--serif);font-size:2.5rem;font-weight:300;color:var(--army);display:block;line-height:1}
+.st{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:300;margin-top:.4rem;display:block}
+
+/* ─── PARFUM SECTION ─── */
+.parfum-section{padding:3.5rem 1.4rem;background:var(--warm);position:relative;overflow:hidden}
+.parfum-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(107,127,94,.05) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}
+.section-head{text-align:center;margin-bottom:2.5rem;position:relative;z-index:1}
+.section-head .sl{display:block;margin-bottom:.6rem}
+.section-head h2{font-family:var(--serif);font-size:clamp(1.9rem,7vw,3rem);font-weight:300;color:var(--dark);line-height:1.05}
 .section-head h2 em{font-style:italic;color:var(--army)}
-.section-head p{max-width:50ch;margin:1.2rem auto 0;font-size:.87rem;line-height:1.85;color:var(--muted);font-weight:300}
-.parfum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8rem}
-.parfum-card{border:1px solid var(--border);background:var(--cream);overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s;}
-.parfum-card:hover{border-color:var(--army);transform:translateY(-5px)}
-.parfum-card-img{height:280px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.parfum-card-img svg{position:relative;z-index:2;transition:transform .4s ease;filter:drop-shadow(0 8px 20px rgba(0,0,0,.1));}
-.parfum-card:hover .parfum-card-img svg{transform:translateY(-6px) scale(1.04)}
-.parfum-card-body{padding:1.6rem 1.8rem 2rem}
-.parfum-card-body h3{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--dark);margin-bottom:.25rem}
-.card-persona{font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:var(--army);font-weight:300;display:block;margin-bottom:.8rem}
-.card-desc{font-size:.82rem;line-height:1.8;color:var(--dark2);font-weight:300}
-.card-mbti-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
-.mbti-tag{font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;font-weight:400;padding:.2rem .6rem;border:1px solid var(--border);color:var(--muted);border-radius:3px;}
-.cta-section{padding:8rem 5.5rem;background:var(--army);text-align:center;position:relative;overflow:hidden;}
-.cta-section::before{content:'Souléa';font-family:var(--serif);font-size:18rem;font-weight:300;color:rgba(255,255,255,.04);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;}
-.cta-label{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army-pale);font-weight:300;margin-bottom:1.5rem;display:block}
-.cta-title{font-family:var(--serif);font-size:clamp(2.5rem,4vw,4.5rem);font-weight:300;color:#F2F7F2;line-height:1.05;margin-bottom:1.5rem}
-.cta-title em{font-style:italic;color:var(--army-pale)}
-.cta-desc{font-size:.88rem;line-height:1.85;color:rgba(242,247,242,.6);font-weight:300;max-width:46ch;margin:0 auto 3rem}
-.btn-cream{display:inline-flex;align-items:center;gap:1rem;padding:1.1rem 2.8rem;background:var(--cream);color:var(--army);font-family:var(--sans);font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;font-weight:500;border:none;cursor:pointer;transition:all .3s;position:relative;z-index:1;}
-.btn-cream:hover{background:#fff;gap:1.6rem}
-footer{background:var(--dark);border-top:1px solid rgba(74,94,69,.2);padding:3rem 5.5rem;display:flex;justify-content:space-between;align-items:center;}
-.footer-logo{font-family:var(--serif);font-size:1.5rem;font-weight:300;letter-spacing:.18em;color:var(--cream)}
-.footer-logo span{color:var(--army-pale)}
-.footer-copy{font-size:.7rem;letter-spacing:.1em;color:rgba(242,247,242,.3);font-weight:300}
-.footer-tagline{font-family:var(--serif);font-style:italic;font-size:.95rem;color:rgba(200,216,196,.5);font-weight:300}
-/* QUIZ */
-.quiz-hero{min-height:38vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:var(--cream);padding:8rem 2rem 4rem;position:relative;overflow:hidden;}
-.quiz-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(74,94,69,.1) 0%,transparent 70%);}
-.quiz-hero-label{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1rem;position:relative;z-index:1}
-.quiz-hero-title{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:var(--dark);line-height:1.05;position:relative;z-index:1}
-.quiz-hero-title em{font-style:italic;color:var(--army)}
-.quiz-hero-sub{font-size:.87rem;color:var(--muted);font-weight:300;margin-top:1rem;max-width:44ch;line-height:1.8;position:relative;z-index:1}
-.quiz-container{max-width:720px;margin:0 auto;padding:4rem 2rem 8rem}
-.quiz-progress-wrap{margin-bottom:2.5rem}
-.progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
-.progress-q{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:300}
-.progress-num{font-family:var(--serif);font-size:1.3rem;color:var(--army);font-weight:300}
-.progress-bar-bg{width:100%;height:2px;background:var(--border)}
-.progress-bar-fill{height:100%;background:var(--army);transition:width .4s ease}
-.question-card{background:var(--cream);border:1px solid var(--border);padding:2.8rem;margin-bottom:1.5rem;}
-.q-num{font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--army);font-weight:300;display:block;margin-bottom:.9rem}
-.q-text{font-family:var(--serif);font-size:1.65rem;font-weight:300;color:var(--dark);line-height:1.3;margin-bottom:2.2rem}
-.choices{display:flex;flex-direction:column;gap:.75rem}
-.choice-btn{padding:1.05rem 1.4rem;border:1px solid var(--border);background:var(--warm);font-family:var(--sans);font-size:.84rem;font-weight:300;line-height:1.5;color:var(--dark2);text-align:left;cursor:pointer;display:flex;align-items:flex-start;gap:.9rem;}
-.choice-btn:hover{border-color:rgba(74,94,69,.5);background:rgba(200,216,196,.2)}
-.choice-btn.selected{border-color:var(--army);background:rgba(200,216,196,.32);color:var(--dark)}
-.choice-letter{width:22px;height:22px;border:1px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:500;flex-shrink:0;margin-top:.06rem;opacity:.55;}
-.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:2rem;padding-top:1.8rem;border-top:1px solid var(--border)}
-.quiz-back{background:transparent;border:none;cursor:pointer;font-family:var(--sans);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:300;}
-.quiz-back:hover{color:var(--dark)}
-.quiz-back:disabled{opacity:.25;cursor:default}
-/* RESULT */
-.result-hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:80px;overflow:hidden;}
-.result-left{display:flex;flex-direction:column;justify-content:center;padding:5rem 4rem 5rem 5.5rem;}
-.result-label{font-size:.68rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:1rem;display:block}
-.result-mbti{font-family:var(--serif);font-size:5.5rem;font-weight:300;color:var(--dark);line-height:.85;letter-spacing:.08em;margin-bottom:.4rem}
-.result-type{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:var(--muted);margin-bottom:.5rem;font-weight:300}
-.result-parfum-name{font-family:var(--serif);font-size:3.2rem;font-weight:300;color:var(--dark);line-height:1;margin-bottom:1.5rem}
-.result-parfum-name em{font-style:italic;color:var(--army)}
-.result-desc{font-size:.88rem;line-height:1.9;color:var(--dark2);font-weight:300;max-width:42ch;margin-bottom:2.2rem}
-.notes-label{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:.7rem;display:block}
-.notes-list{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:2.2rem}
-.note-tag{padding:.28rem .9rem;border:1px solid var(--border);font-size:.7rem;letter-spacing:.1em;color:var(--dark2);font-weight:300}
-.result-btns{display:flex;gap:1rem;flex-wrap:wrap}
-.result-right{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.result-bg{position:absolute;inset:0}
-.res-bottle-wrap{position:relative;z-index:3;text-align:center}
-.res-bottle-name{font-family:var(--serif);font-size:1.6rem;font-style:italic;font-weight:300;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.2);display:block;margin-top:1.2rem;}
-.res-bottle-mbti{display:inline-block;margin-top:.5rem;padding:.3rem 1rem;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:#fff;font-weight:300;border-radius:100px;}
-/* Shop modal */
-.shop-modal-overlay{position:fixed;inset:0;background:rgba(28,35,27,.55);z-index:500;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
-.shop-modal-overlay.open{display:flex}
-.shop-modal{background:var(--warm);border:1px solid var(--border);padding:3rem;max-width:400px;width:90%;text-align:center;animation:fadeIn .3s ease;}
-.shop-modal h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);margin-bottom:.4rem}
-.shop-modal h3 em{font-style:italic;color:var(--army)}
-.shop-modal p{font-size:.85rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:2rem}
-.shop-btns{display:flex;flex-direction:column;gap:.8rem}
-.shop-btn{display:flex;align-items:center;justify-content:center;gap:.8rem;padding:1rem 1.5rem;border:1px solid var(--border);background:var(--cream);font-family:var(--sans);font-size:.82rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dark);font-weight:400;cursor:pointer;text-decoration:none;transition:border-color .25s,background .25s;}
-.shop-btn.shopee{border-color:#EE4D2D;color:#EE4D2D}
-.shop-btn.shopee:hover{background:rgba(238,77,45,.08)}
-.shop-btn.tiktok{border-color:#222;color:#222}
-.shop-btn.tiktok:hover{background:rgba(0,0,0,.05)}
-.shop-close{background:none;border:none;cursor:pointer;margin-top:1.2rem;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:300;}
-.other-parfums{padding:5rem 5.5rem;background:var(--cream)}
-.other-parfums h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);margin-bottom:.4rem}
-.other-parfums h3 em{font-style:italic;color:var(--army)}
-.other-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;margin-top:2rem}
-.other-card{border:1px solid var(--border);background:var(--warm);overflow:hidden;cursor:pointer;transition:border-color .3s,transform .3s;}
-.other-card:hover{border-color:var(--army);transform:translateY(-4px)}
-.other-card-top{height:130px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.other-card-body{padding:1rem 1.2rem 1.4rem}
-.other-card-body h4{font-family:var(--serif);font-size:1.1rem;font-weight:300;color:var(--dark);margin-bottom:.15rem}
-.other-card-body span{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--army);font-weight:300}
-.result-share{padding:4rem 5.5rem;background:var(--warm);text-align:center;border-top:1px solid var(--border)}
-.result-share h3{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--dark);margin-bottom:.8rem}
+.section-head p{margin:.8rem auto 0;font-size:.8rem;line-height:1.82;color:var(--muted);font-weight:300}
+
+/* Horizontal scroll on mobile */
+.parfum-scroll-wrap{
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;margin:0 -1.4rem;padding:0 1.4rem;
+  position:relative;z-index:1;
+}
+.parfum-scroll-wrap::-webkit-scrollbar{display:none}
+.parfum-row{
+  display:flex;gap:1.2rem;
+  width:max-content;padding-bottom:.5rem;
+}
+.parfum-card{
+  width:72vw;max-width:280px;min-width:220px;
+  border:1px solid rgba(107,127,94,.15);overflow:hidden;cursor:pointer;
+  background:var(--cream);flex-shrink:0;
+  transition:border-color .25s;
+}
+.parfum-card:active{border-color:var(--army)}
+
+.pcard-top{
+  height:240px;position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:1rem;
+}
+.pcard-bg{position:absolute;inset:0}
+.pcard-sparkles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pcard-sp{position:absolute;border-radius:50%;animation:sparkle 2.5s ease-in-out infinite}
+@keyframes sparkle{0%,100%{opacity:0;transform:scale(0)}45%,55%{opacity:.75;transform:scale(1)}}
+.pcard-floral{position:absolute;opacity:.14;pointer-events:none}
+.pcard-bottle-wrap{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center}
+.pcard-box{
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:80px;background:rgba(255,255,255,.55);backdrop-filter:blur(4px);
+  border:1px solid rgba(255,255,255,.7);border-radius:3px;
+  display:flex;flex-direction:column;align-items:center;padding:.35rem .25rem .25rem;z-index:1;
+}
+.pcard-box-brand{font-family:var(--serif);font-size:.5rem;letter-spacing:.18em;color:rgba(28,26,21,.7);display:block;text-align:center}
+.pcard-box-tag{font-family:var(--serif);font-size:.35rem;font-style:italic;color:rgba(28,26,21,.45);display:block;text-align:center;margin-top:.1rem}
+.pcard-bottle{position:relative;z-index:4;margin-top:6px}
+
+.parfum-card-body{padding:1.2rem 1.3rem 1.5rem}
+.parfum-card-body h3{font-family:var(--serif);font-size:1.25rem;font-weight:300;color:var(--dark);margin-bottom:.2rem}
+.card-persona{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--army);font-weight:300;display:block;margin-bottom:.6rem}
+.card-desc{font-size:.77rem;line-height:1.8;color:var(--dark2);font-weight:300}
+.card-mbti-list{display:flex;flex-wrap:wrap;gap:.28rem;margin-top:.7rem}
+.mtag{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;font-weight:400;padding:.15rem .48rem;border:1px solid rgba(107,127,94,.2);color:var(--muted)}
+
+/* Scroll hint dots */
+.scroll-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.2rem;position:relative;z-index:1}
+.sdot{width:6px;height:6px;border-radius:50%;background:rgba(107,127,94,.2)}
+.sdot.active{background:var(--army);width:18px;border-radius:3px}
+
+/* ─── CTA ─── */
+.cta-section{
+  padding:4.5rem 1.4rem;background:var(--dark);text-align:center;position:relative;overflow:hidden;
+}
+.cta-section::before{content:'Souléa';font-family:var(--serif);font-size:8rem;font-weight:300;color:rgba(107,127,94,.05);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.cta-orb{position:absolute;border-radius:50%;filter:blur(40px);pointer-events:none}
+.corb1{width:200px;height:200px;background:rgba(107,127,94,.1);top:-20%;left:-15%;animation:orbf 9s ease-in-out infinite}
+.corb2{width:160px;height:160px;background:rgba(184,160,96,.08);bottom:-15%;right:-10%;animation:orbf 11s ease-in-out infinite reverse}
+.cta-sl{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--army-mid);font-weight:300;margin-bottom:.9rem;display:block;position:relative;z-index:1}
+.cta-title{font-family:var(--serif);font-size:clamp(2rem,8vw,3.5rem);font-weight:300;color:var(--cream);line-height:1.05;margin-bottom:1.2rem;position:relative;z-index:1}
+.cta-title em{font-style:italic;color:var(--army-mid)}
+.cta-desc{font-size:.82rem;line-height:1.85;color:rgba(250,250,247,.4);font-weight:300;margin:0 auto 2rem;position:relative;z-index:1;max-width:38ch}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--dark);border-top:1px solid rgba(107,127,94,.15);
+  padding:1.8rem 1.4rem;
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;text-align:center;
+}
+.flogo{font-family:var(--serif);font-size:1.3rem;font-weight:300;letter-spacing:.15em;color:var(--cream)}
+.flogo .ac{color:var(--army-mid)}
+.ftagline{font-family:var(--serif);font-style:italic;font-size:.82rem;color:rgba(107,127,94,.5);font-weight:300}
+.fcopy{font-size:.6rem;letter-spacing:.08em;color:rgba(250,250,247,.22);font-weight:300}
+
+/* ════════ QUIZ ════════ */
+.quiz-page-wrap{background:var(--warm)}
+.quiz-hero{
+  padding:calc(var(--nav-h) + 2.5rem) 1.4rem 2.5rem;
+  text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#dce8d5 0%,#e8eee5 50%,var(--warm) 100%);
+}
+.quiz-hero::after{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle 120px at 10% 30%,rgba(196,180,230,.28) 0%,transparent 70%),
+    radial-gradient(circle 80px at 90% 70%,rgba(240,200,120,.22) 0%,transparent 70%);
+  pointer-events:none;
+}
+.qh-label{font-size:.62rem;letter-spacing:.35em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:.8rem;position:relative;z-index:1;display:block}
+.qh-title{font-family:var(--serif);font-size:clamp(2rem,8vw,3rem);font-weight:300;color:var(--dark);line-height:1;position:relative;z-index:1}
+.qh-title em{font-style:italic;color:var(--army)}
+.qh-sub{font-size:.8rem;color:var(--muted);font-weight:300;margin:.8rem auto 0;max-width:34ch;line-height:1.82;position:relative;z-index:1}
+
+.quiz-container{padding:2rem 1.2rem 6rem;max-width:600px;margin:0 auto}
+.quiz-progress-wrap{margin-bottom:2rem}
+.prog-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.prog-q{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:300}
+.prog-num{font-family:var(--serif);font-size:1.1rem;color:var(--army);font-weight:300}
+.pbar-bg{width:100%;height:2px;background:rgba(107,127,94,.15);border-radius:2px}
+.pbar-fill{height:100%;background:var(--army);border-radius:2px;transition:width .4s ease}
+
+.qcard{background:var(--cream);border:1px solid rgba(107,127,94,.18);padding:1.8rem 1.4rem 1.5rem}
+.qnum{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--army);font-weight:300;display:block;margin-bottom:.8rem}
+.qtext{font-family:var(--serif);font-size:clamp(1.2rem,5vw,1.55rem);font-weight:300;color:var(--dark);line-height:1.3;margin-bottom:1.8rem}
+
+.choices{display:flex;flex-direction:column;gap:.65rem}
+.choice-btn{
+  padding:.95rem 1.1rem;
+  border:1px solid rgba(107,127,94,.2);background:var(--warm);
+  font-family:var(--sans);font-size:.8rem;font-weight:300;line-height:1.52;
+  color:var(--dark2);text-align:left;cursor:pointer;
+  display:flex;align-items:flex-start;gap:.8rem;
+  border-radius:2px;touch-action:manipulation;
+  /* NO transition at all */
+  -webkit-tap-highlight-color:transparent;
+}
+.choice-btn.selected{border-color:var(--army);background:rgba(107,127,94,.09);color:var(--dark)}
+.choice-btn.selected .cletter{border-color:var(--army);color:var(--army)}
+.cletter{width:22px;height:22px;border:1.5px solid rgba(107,127,94,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:400;flex-shrink:0;margin-top:.12rem;color:var(--muted);min-width:22px}
+
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;padding-top:1.4rem;border-top:1px solid rgba(107,127,94,.14)}
+.qback{background:transparent;border:none;cursor:pointer;font-family:var(--sans);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:300;padding:.6rem .2rem;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.qback:disabled{opacity:.22;cursor:default}
+
+/* ════════ RESULT ════════ */
+.result-page{background:var(--warm)}
+
+/* Result top visual — full width on mobile */
+.result-visual{
+  width:100%;position:relative;overflow:hidden;
+  padding-top:var(--nav-h);
+  min-height:55vw;max-height:380px;
+  display:flex;align-items:center;justify-content:center;
+}
+.rr-bg{position:absolute;inset:0}
+.rr-orb{position:absolute;border-radius:50%;filter:blur(35px);pointer-events:none;animation:orbf 5s ease-in-out infinite;top:50%;left:50%;transform:translate(-50%,-50%)}
+.rr-floral{position:absolute;opacity:.13;pointer-events:none}
+.rr-ghost{position:absolute;bottom:-2rem;right:-1rem;font-family:var(--serif);font-size:9rem;font-weight:300;color:rgba(255,255,255,.1);line-height:1;user-select:none}
+.rr-bottle-display{position:relative;z-index:5;display:flex;flex-direction:column;align-items:center;gap:.7rem}
+.rr-pname{font-family:var(--serif);font-size:clamp(1.6rem,7vw,2.8rem);font-weight:300;font-style:italic;color:#fff;text-shadow:0 3px 20px rgba(0,0,0,.15);line-height:1;text-align:center}
+.rr-circle{width:56px;height:56px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:.75rem;letter-spacing:.15em;font-weight:300;color:#fff;font-family:var(--sans)}
+
+/* Result text below */
+.result-text{padding:2rem 1.4rem 2.5rem;background:var(--warm)}
+.rl-label{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:.7rem;display:block}
+.rl-mbti{font-family:var(--serif);font-size:4rem;font-weight:300;color:var(--dark);line-height:.85;letter-spacing:.06em;margin-bottom:.4rem}
+.rl-type{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--muted);margin-bottom:.5rem;font-weight:300}
+.rl-pname{font-family:var(--serif);font-size:clamp(1.8rem,7vw,2.8rem);font-weight:300;color:var(--dark);line-height:1;margin-bottom:1.1rem}
+.rl-pname em{font-style:italic;color:var(--army)}
+.rl-desc{font-size:.82rem;line-height:1.92;color:var(--dark2);font-weight:300;margin-bottom:1.5rem}
+.nl{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--army);font-weight:300;margin-bottom:.55rem;display:block}
+.nlist{display:flex;flex-wrap:wrap;gap:.38rem;margin-bottom:1.5rem}
+.ntag{padding:.22rem .75rem;border:1px solid rgba(184,160,96,.28);font-size:.65rem;letter-spacing:.08em;color:var(--dark2);font-weight:300}
+.shop-btns{display:flex;gap:.7rem;margin-bottom:.8rem}
+.result-btns{display:flex;gap:.7rem}
+
+.result-share{padding:2.5rem 1.4rem;background:var(--army-light);text-align:center}
+.result-share h3{font-family:var(--serif);font-size:1.7rem;font-weight:300;color:var(--dark);margin-bottom:.8rem}
 .result-share h3 em{font-style:italic;color:var(--army)}
-.result-share p{font-size:.87rem;color:var(--muted);font-weight:300;margin-bottom:1.8rem;max-width:38ch;margin-left:auto;margin-right:auto;line-height:1.8}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--warm)}
-::-webkit-scrollbar-thumb{background:var(--army);border-radius:2px}
+.result-share p{font-size:.8rem;color:var(--muted);font-weight:300;margin-bottom:1.5rem;line-height:1.8}
+
+.other-parfums{padding:2.5rem 1.4rem}
+.other-parfums h3{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:var(--dark);margin-bottom:.3rem}
+.other-parfums h3 em{font-style:italic;color:var(--army)}
+.other-parfums p{font-size:.78rem;color:var(--muted);font-weight:300;margin-bottom:1.5rem}
+.other-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -1.4rem;padding:0 1.4rem}
+.other-scroll::-webkit-scrollbar{display:none}
+.other-row{display:flex;gap:1rem;width:max-content;padding-bottom:.5rem}
+.ocard{width:48vw;max-width:180px;min-width:140px;border:1px solid rgba(107,127,94,.15);background:var(--cream);overflow:hidden;cursor:pointer;flex-shrink:0}
+.ocard-top{height:110px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ocard-name{font-family:var(--serif);font-size:1.05rem;font-style:italic;font-weight:300;color:#fff;position:relative;z-index:2;text-shadow:0 2px 8px rgba(0,0,0,.18);text-align:center;padding:0 .3rem}
+.ocard-body{padding:.8rem 1rem 1.1rem}
+.ocard-body h4{font-family:var(--serif);font-size:.95rem;font-weight:300;color:var(--dark);margin-bottom:.18rem}
+.ocard-body span{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--army);font-weight:300}
+
+/* Desktop overrides (min 768px) */
+@media(min-width:768px){
+  :root{--nav-h:64px}
+  nav{padding:0 3rem}
+  .logo{font-size:1.8rem}
+  .hamburger{display:none}
+  .nav-quiz-btn{display:none}
+  .nav-desktop-links{display:flex;gap:2.2rem;list-style:none}
+  .nav-desktop-links a{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+  .nav-desktop-links a:hover{color:var(--dark)}
+  .mobile-menu{display:none!important}
+
+  /* Hero — side by side on desktop */
+  .hero{flex-direction:row;min-height:100vh}
+  .hero-visual{width:45%;height:auto;max-height:none;min-height:auto}
+  .hero-text{padding:5rem 4rem 5rem 5rem;justify-content:center;flex:1}
+  .hv-ghost{font-size:18rem}
+
+  .about{padding:7rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem}
+  .parfum-section{padding:7rem 5rem}
+  .parfum-scroll-wrap{overflow-x:visible;margin:0;padding:0}
+  .parfum-row{display:grid;grid-template-columns:repeat(3,1fr);width:auto;padding-bottom:0}
+  .parfum-card{width:auto;max-width:none;min-width:0}
+  .pcard-top{height:280px}
+  .cta-section{padding:8rem 5rem}
+  footer{flex-direction:row;padding:2.5rem 5rem;text-align:left}
+
+  .result-page .result-visual{min-height:55vh;max-height:none;padding-top:var(--nav-h)}
+  .result-page{display:block}
+  .result-hero-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+  .result-visual{height:100%;max-height:none}
+  .result-text{padding:5rem 4rem 5rem 5rem;display:flex;flex-direction:column;justify-content:center}
+  .rl-mbti{font-size:5.5rem}
+  .rl-pname{font-size:3rem}
+  .shop-btns .btn-shopee,.shop-btns .btn-tiktok{flex:0 1 auto}
+  .result-share{padding:5rem}
+  .other-parfums{padding:5rem}
+  .other-scroll{overflow-x:visible;margin:0;padding:0}
+  .other-row{display:grid;grid-template-columns:repeat(3,1fr);width:auto;padding-bottom:0}
+  .ocard{width:auto;max-width:none;min-width:0}
+  .ocard-top{height:130px}
+  .quiz-container{padding:3.5rem 2rem 8rem}
+  .quiz-hero{padding:calc(var(--nav-h)+3rem) 2rem 3rem}
+}
+@media(min-width:768px){
+  .nav-quiz-btn{display:none}
+}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-  <a class="logo" onclick="showPage('home')">Soul<span>é</span>a</a>
-  <ul class="nav-links">
-    <li><a onclick="showPage('home')">Beranda</a></li>
-    <li><a onclick="scrollToParfum()">Koleksi</a></li>
-    <li><a onclick="showPage('quiz');resetQuiz()">Temukan Scentmu</a></li>
-  </ul>
+  <span class="logo" onclick="showPage('home')">Soule<span class="ac">á</span></span>
+  <div class="nav-right">
+    <button class="nav-quiz-btn" onclick="startQuiz()">Temukan Scentmu</button>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <!-- Desktop nav -->
+    <ul class="nav-desktop-links" style="display:none">
+      <li><a onclick="showPage('home')">Beranda</a></li>
+      <li><a onclick="scrollToKoleksi()">Koleksi</a></li>
+      <li><a onclick="startQuiz()">Temukan Scentmu</a></li>
+    </ul>
+  </div>
 </nav>
 
-<!-- SHOP MODAL -->
-<div class="shop-modal-overlay" id="shop-modal" onclick="closeShop(event)">
-  <div class="shop-modal">
-    <h3>Pesan <em>Souléa</em></h3>
-    <p>Pilih platform favoritmu untuk memesan parfum kepribadianmu.</p>
-    <div class="shop-btns">
-      <a href="https://shopee.co.id" target="_blank" class="shop-btn shopee">🛍&nbsp; Beli di Shopee</a>
-      <a href="https://www.tiktok.com/shop" target="_blank" class="shop-btn tiktok">♪&nbsp; Beli di TikTok Shop</a>
-    </div>
-    <button class="shop-close" onclick="document.getElementById('shop-modal').classList.remove('open')">Tutup ✕</button>
-  </div>
+<!-- Mobile menu overlay -->
+<div class="mobile-menu" id="mobile-menu">
+  <a onclick="closeMenu();showPage('home')">Beranda</a>
+  <a onclick="closeMenu();scrollToKoleksi()">Koleksi</a>
+  <a onclick="closeMenu();startQuiz()">Temukan Scentmu</a>
 </div>
 
-<!-- HOME -->
+<!-- ══════════════════ HOME ══════════════════ -->
 <div id="page-home" class="page active">
   <section class="hero">
-    <div class="hero-left">
-      <p class="eyebrow">Scent of Personality</p>
-      <h1 class="hero-title">Kenal<br>dirimu<br><em>lebih dalam</em></h1>
-      <p class="hero-subtitle">Parfum yang berbicara tentang jiwamu</p>
-      <p class="hero-desc">Souléa lahir dari keyakinan bahwa setiap jiwa punya bahasa aroma tersendiri. Kami memadukan psikologi kepribadian MBTI dengan seni parfumeri eksklusif — enam varian untuk merayakan siapa dirimu.</p>
-      <button class="btn-army" onclick="showPage('quiz');resetQuiz()">Lihat Parfum Ku →</button>
+    <!-- Visual (top on mobile, right on desktop) -->
+    <div class="hero-visual" id="hero-visual-panel" style="order:1">
+      <div class="hv-bg"></div>
+      <div class="hv-orb orb1"></div><div class="hv-orb orb2"></div><div class="hv-orb orb3"></div>
+      <div class="hv-sparkles" id="hv-sparkles"></div>
+      <div class="hv-floral hv-fl1" id="hv-fl1"></div>
+      <div class="hv-floral hv-fl2" id="hv-fl2"></div>
+      <div class="hv-ghost">S</div>
+      <div class="hv-bottles" id="hv-bottles"></div>
+      <div class="hv-badge"><span class="hv-badge-n">16</span><span class="hv-badge-t">Tipe MBTI</span></div>
     </div>
-    <div class="hero-right">
-      <div class="hero-bottle-main" id="hero-bottle-main"></div>
-      <div class="hero-pills">
-        <span class="h-pill">Dream Muse</span>
-        <span class="h-pill">Power Move</span>
-        <span class="h-pill">Midnight Code</span>
-        <span class="h-pill">Chaos Bloom</span>
-        <span class="h-pill">Golden Bloom</span>
-        <span class="h-pill">Cool Drift</span>
-      </div>
-      <div class="hero-badge">
-        <span class="badge-num">16</span>
-        <span class="badge-txt">Tipe MBTI</span>
+    <!-- Text -->
+    <div class="hero-text" style="order:2">
+      <p class="eyebrow">Scent of Personality</p>
+      <h1 class="hero-title">Aroma<br>yang<br><em>mengenalmu</em></h1>
+      <p class="hero-sub">Parfum yang lahir dari jiwamu</p>
+      <p class="hero-desc">Souléa memadukan psikologi kepribadian MBTI dengan seni parfumeri. Enam varian eksklusif yang diciptakan untuk merayakan siapa dirimu.</p>
+      <div class="hero-cta-row">
+        <button class="btn-army" onclick="startQuiz()">Lihat Parfum Ku →</button>
+        <button class="btn-outline" onclick="scrollToKoleksi()">Koleksi</button>
       </div>
     </div>
   </section>
 
-  <div class="divider"><div class="divider-line"></div><span style="color:var(--army);font-size:.9rem;opacity:.6">✦</span><div class="divider-line"></div></div>
+  <div class="divider"><div class="dl"></div><span class="dd">✦</span><div class="dl"></div></div>
 
   <section class="about">
     <div>
-      <span class="about-label">Tentang Souléa</span>
-      <h2 class="about-title">Aromamu adalah <em>cerminan jiwamu</em></h2>
-      <p class="about-p">Souléa percaya bahwa kepribadian bukan sekadar cara kita berpikir dan berperasaan — ia juga punya aroma. Terinspirasi dari framework Myers-Briggs, kami merancang setiap varian untuk menangkap esensi terdalam dari setiap tipe kepribadian.</p>
-      <p class="about-p">Dari si pemimpi yang lembut hingga si pemimpin yang tegas, dari si petualang bebas hingga si penjaga yang hangat — setiap jiwa ada parfumnya di Souléa.</p>
+      <span class="sl">Tentang Souléa</span>
+      <h2 class="about-title">Setiap jiwa punya <em>aromanya sendiri</em></h2>
+      <p class="about-p">Souléa percaya bahwa kepribadian juga punya aroma. Terinspirasi framework Myers-Briggs, kami merancang tiap varian untuk menangkap esensi terdalam dari setiap tipe kepribadian.</p>
+      <p class="about-p">Dari si pemimpi yang lembut hingga si pemimpin yang tegas — setiap jiwa ada parfumnya di Souléa.</p>
     </div>
     <div class="stats-grid">
-      <div class="stat-box"><span class="stat-num">6</span><span class="stat-label">Varian Parfum</span></div>
-      <div class="stat-box"><span class="stat-num">16</span><span class="stat-label">Tipe MBTI</span></div>
-      <div class="stat-box"><span class="stat-num">10</span><span class="stat-label">Pertanyaan Jiwa</span></div>
-      <div class="stat-box"><span class="stat-num">1</span><span class="stat-label">Scentmu</span></div>
+      <div class="stat-box"><span class="sn">6</span><span class="st">Varian Parfum</span></div>
+      <div class="stat-box"><span class="sn">16</span><span class="st">Tipe MBTI</span></div>
+      <div class="stat-box"><span class="sn">10</span><span class="st">Pertanyaan</span></div>
+      <div class="stat-box"><span class="sn">1</span><span class="st">Scentmu</span></div>
     </div>
   </section>
 
   <section class="parfum-section" id="koleksi">
     <div class="section-head">
-      <span class="about-label">Koleksi Eksklusif</span>
+      <span class="sl">Koleksi Eksklusif</span>
       <h2>Enam <em>aroma</em>, satu untukmu</h2>
-      <p>Setiap parfum dirancang untuk meresapi karakter unik dari kepribadian MBTI yang berbeda.</p>
+      <p>Setiap parfum diciptakan untuk kepribadian MBTI yang berbeda.</p>
     </div>
-    <div class="parfum-grid" id="parfum-grid"></div>
+    <div class="parfum-scroll-wrap" id="parfum-scroll">
+      <div class="parfum-row" id="parfum-row"></div>
+    </div>
+    <div class="scroll-dots" id="scroll-dots"></div>
   </section>
 
   <section class="cta-section">
-    <span class="cta-label">Mulai Perjalananmu</span>
-    <h2 class="cta-title">Siap menemukan<br><em>aroma jiwamu?</em></h2>
-    <p class="cta-desc">Jawab 10 pertanyaan tentang kepribadianmu dan biarkan Souléa menemukan parfum yang paling merayakan dirimu yang sebenarnya.</p>
-    <button class="btn-cream" onclick="showPage('quiz');resetQuiz()">Mulai Tes Sekarang →</button>
+    <div class="cta-orb corb1"></div><div class="cta-orb corb2"></div>
+    <span class="cta-sl">Mulai Perjalananmu</span>
+    <h2 class="cta-title">Siap temukan<br><em>aroma jiwamu?</em></h2>
+    <p class="cta-desc">Jawab 10 pertanyaan dan biarkan Souléa menemukan parfum yang paling merayakan dirimu.</p>
+    <button class="btn-army" onclick="startQuiz()">Mulai Tes →</button>
   </section>
 
   <footer>
-    <span class="footer-logo">Soul<span>é</span>a</span>
-    <span class="footer-tagline">Scent of Personality</span>
-    <span class="footer-copy">© 2025 Souléa. Semua hak dilindungi.</span>
+    <span class="flogo">Soule<span class="ac">á</span></span>
+    <span class="ftagline">Scent of Personality</span>
+    <span class="fcopy">© 2025 Souléa.</span>
   </footer>
 </div>
 
-<!-- QUIZ -->
+<!-- ══════════════════ QUIZ ══════════════════ -->
 <div id="page-quiz" class="page">
-  <div class="quiz-hero">
-    <p class="quiz-hero-label">Tes Kepribadian Souléa</p>
-    <h1 class="quiz-hero-title">Temukan <em>Scentmu</em></h1>
-    <p class="quiz-hero-sub">Jawab 10 pertanyaan jujur. Tidak ada jawaban benar atau salah — hanya dirimu yang asli.</p>
-  </div>
-  <div class="quiz-container">
-    <div class="quiz-progress-wrap">
-      <div class="progress-info">
-        <span class="progress-q">Pertanyaan</span>
-        <span class="progress-num" id="prog-num">1 / 10</span>
-      </div>
-      <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog-bar" style="width:10%"></div></div>
+  <div class="quiz-page-wrap">
+    <div class="quiz-hero">
+      <span class="qh-label">Tes Kepribadian Souléa</span>
+      <h1 class="qh-title">Temukan <em>Scentmu</em></h1>
+      <p class="qh-sub">Jawab 10 pertanyaan jujur. Tidak ada jawaban benar atau salah.</p>
     </div>
-    <div id="quiz-card-wrap"></div>
-    <div class="quiz-nav">
-      <button class="quiz-back" id="btn-back" onclick="quizBack()" disabled>← Sebelumnya</button>
-      <button class="btn-army" id="btn-next" onclick="quizNext()">Selanjutnya →</button>
+    <div class="quiz-container">
+      <div class="quiz-progress-wrap">
+        <div class="prog-info">
+          <span class="prog-q">Pertanyaan</span>
+          <span class="prog-num" id="prog-num">1 / 10</span>
+        </div>
+        <div class="pbar-bg"><div class="pbar-fill" id="pbar" style="width:10%"></div></div>
+      </div>
+      <div id="qcard-wrap"></div>
+      <div class="quiz-nav">
+        <button class="qback" id="btn-back" onclick="quizBack()" disabled>← Sebelumnya</button>
+        <button class="btn-army" id="btn-next" onclick="quizNext()">Selanjutnya →</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- RESULT -->
+<!-- ══════════════════ RESULT ══════════════════ -->
 <div id="page-result" class="page">
-  <div class="result-hero">
-    <div class="result-left">
-      <span class="result-label">Parfum Jiwamu</span>
-      <div class="result-mbti" id="res-mbti">INFP</div>
-      <div class="result-type" id="res-type">Sensitive Idealist</div>
-      <div class="result-parfum-name" id="res-name"></div>
-      <p class="result-desc" id="res-desc"></p>
-      <span class="notes-label">Aroma Utama</span>
-      <div class="notes-list" id="res-notes"></div>
-      <div class="result-btns">
-        <button class="btn-army" onclick="document.getElementById('shop-modal').classList.add('open')">Pesan Sekarang →</button>
-        <button class="btn-outline" onclick="showPage('quiz');resetQuiz()">Ulangi Tes</button>
+  <div class="result-page">
+    <div class="result-hero-wrap">
+      <!-- Visual top (mobile) / right (desktop) -->
+      <div class="result-visual" id="result-visual" style="order:1">
+        <div class="rr-bg" id="rr-bg"></div>
+        <div class="rr-orb" id="rr-orb" style="width:220px;height:220px"></div>
+        <div class="rr-floral" id="rr-fl1" style="top:-3%;left:2%;width:120px"></div>
+        <div class="rr-floral" id="rr-fl2" style="bottom:-3%;right:2%;width:110px"></div>
+        <div class="rr-ghost" id="rr-ghost">D</div>
+        <div class="rr-bottle-display">
+          <div id="rr-bottle-svg"></div>
+          <div class="rr-pname" id="rr-pname">Dream Muse</div>
+          <div class="rr-circle" id="rr-circle">INFP</div>
+        </div>
+      </div>
+      <!-- Text -->
+      <div class="result-text" style="order:2">
+        <span class="rl-label">Parfum Jiwamu</span>
+        <div class="rl-mbti" id="res-mbti">INFP</div>
+        <div class="rl-type" id="res-type">Sensitive Idealist</div>
+        <div class="rl-pname" id="res-name"><em>Dream Muse</em></div>
+        <p class="rl-desc" id="res-desc"></p>
+        <span class="nl">Aroma Utama</span>
+        <div class="nlist" id="res-notes"></div>
+        <div class="shop-btns">
+          <a class="btn-shopee" href="https://shopee.co.id" target="_blank">🛍 Shopee</a>
+          <a class="btn-tiktok" href="https://www.tiktok.com/shop" target="_blank">♪ TikTok Shop</a>
+        </div>
+        <div class="result-btns">
+          <button class="btn-outline" onclick="startQuiz();resetQuiz()">Ulangi Tes</button>
+          <button class="btn-dark" onclick="shareResult()">Bagikan →</button>
+        </div>
       </div>
     </div>
-    <div class="result-right">
-      <div class="result-bg" id="res-bg"></div>
-      <div class="res-bottle-wrap">
-        <div id="res-bottle-svg"></div>
-        <span class="res-bottle-name" id="res-bottle-name"></span>
-        <span class="res-bottle-mbti" id="res-circle"></span>
+
+    <div class="result-share">
+      <h3>Cocok banget? <em>Ceritakan ke dunia</em></h3>
+      <p>Ajak teman-temanmu temukan parfum kepribadian mereka di Souléa.</p>
+      <button class="btn-army" onclick="shareResult()">Bagikan Hasilku →</button>
+    </div>
+
+    <div class="other-parfums">
+      <h3>Koleksi <em>lainnya</em></h3>
+      <p>Eksplorasi semua varian Souléa</p>
+      <div class="other-scroll">
+        <div class="other-row" id="other-row"></div>
       </div>
     </div>
+
+    <footer>
+      <span class="flogo">Soule<span class="ac">á</span></span>
+      <span class="ftagline">Scent of Personality</span>
+      <span class="fcopy">© 2025 Souléa.</span>
+    </footer>
   </div>
-  <div class="result-share">
-    <h3>Cocok banget? <em>Ceritakan pada dunia</em></h3>
-    <p>Bagikan hasilmu dan ajak teman menemukan parfum kepribadian mereka sendiri.</p>
-    <button class="btn-army" onclick="shareResult()">Bagikan Hasilku →</button>
-  </div>
-  <div class="other-parfums">
-    <h3>Eksplorasi koleksi <em>lainnya</em></h3>
-    <p style="font-size:.85rem;color:var(--muted);font-weight:300">Ingin tahu parfum untuk kepribadian lain? Jelajahi semua varian Souléa.</p>
-    <div class="other-grid" id="other-grid"></div>
-  </div>
-  <footer>
-    <span class="footer-logo">Soul<span>é</span>a</span>
-    <span class="footer-tagline">Scent of Personality</span>
-    <span class="footer-copy">© 2025 Souléa</span>
-  </footer>
 </div>
 
 <script>
-// ── BOTTLE SVG GENERATOR ──
-function bottleSVG(key, w){
-  const C={
-    'Dream Muse':{cap:'#D4A8C0',neck:'#EEE6F8',body:'#EDE6F5',wash:'rgba(200,170,232,.5)',lb:'rgba(255,255,255,.62)',t1:'#6B3CA8',t2:'#9870C4',sp:'#C9B4E8',g1:'#EDE6F5',g2:'#C4B0E4',n1:'Dream',n2:'Muse',mb:'INFP · INFJ'},
-    'Power Move':{cap:'#D4A030',neck:'#F5EAC0',body:'#FBF3DC',wash:'rgba(230,200,100,.5)',lb:'rgba(255,255,255,.62)',t1:'#7A5010',t2:'#B87820',sp:'#E8CF80',g1:'#FBF3DC',g2:'#E8CF80',n1:'Power',n2:'Move',mb:'ENTJ · ESTJ'},
-    'Midnight Code':{cap:'#A8A8C8',neck:'#D8D4EC',body:'#E4E0F4',wash:'rgba(148,132,204,.5)',lb:'rgba(255,255,255,.55)',t1:'#2A1B54',t2:'#5A4A8A',sp:'#A094CC',g1:'#E0DCEF',g2:'#A094CC',n1:'Midnight',n2:'Code',mb:'INTJ · INTP'},
-    'Chaos Bloom':{cap:'#E87828',neck:'#FAD8C0',body:'#FDE8DA',wash:'rgba(240,160,100,.5)',lb:'rgba(255,255,255,.62)',t1:'#8A2800',t2:'#C44010',sp:'#F2A882',g1:'#FDE8DA',g2:'#F2A882',n1:'Chaos',n2:'Bloom',mb:'ENFP · ENTP'},
-    'Golden Bloom':{cap:'#C49030',neck:'#F5EAC0',body:'#FDF4DC',wash:'rgba(230,200,110,.5)',lb:'rgba(255,255,255,.62)',t1:'#6A4000',t2:'#A07010',sp:'#E8CE88',g1:'#FDF4DC',g2:'#E8CE88',n1:'Golden',n2:'Bloom',mb:'ENFJ · ESFJ'},
-    'Cool Drift':{cap:'#90C0D0',neck:'#C8E8F4',body:'#D8EEF5',wash:'rgba(100,190,225,.5)',lb:'rgba(255,255,255,.62)',t1:'#0C4A60',t2:'#2A7A9A',sp:'#88C8E0',g1:'#D8EEF5',g2:'#88C8E0',n1:'Cool',n2:'Drift',mb:'ISTP · ISFP'}
-  };
-  const c=C[key];if(!c)return'';
-  const id=key.replace(/\s+/g,'_');
-  return `<svg viewBox="0 0 200 320" xmlns="http://www.w3.org/2000/svg" width="${w}" style="display:block">
+// ════════════════ PARFUM DATA ════════════════
+const PARFUMS = {
+  'Dream Muse':{mbtiList:['INFP','INFJ'],persona:'Sensitive Idealist',
+    desc:'Seperti halaman buku yang belum selesai ditulis — penuh kemungkinan, penuh perasaan. Dream Muse adalah parfum untuk jiwa yang bermimpi dengan matanya terbuka.',
+    notes:['Violet','White Musk','Orris','Vetiver','Vanilla'],
+    bgGrad:'linear-gradient(150deg,#D4C4EE 0%,#B8A8DC 45%,#9880C8 100%)',
+    capColor:'#D4A8A8',capColor2:'#C89090',bodyColor:'rgba(196,176,230,.75)',bodyShine:'rgba(255,255,255,.4)',
+    labelBg:['#C9B8E8','#A890D4'],labelText:'#fff',orbColor:'rgba(180,152,224,.5)',
+    sparkleColor:'rgba(220,200,255,.8)',floralTint:'#9880C8',
+    pastel:'#EDE5F8',pastelBorder:'rgba(176,152,214,.3)'},
+  'Power Move':{mbtiList:['ENTJ','ESTJ'],persona:'Driven Leader',
+    desc:'Aroma ambisi yang membara. Power Move adalah parfum untuk mereka yang masuk ke ruangan dan langsung menjadi pusat gravitasi. Tegas, berkilau, tak tergoyahkan.',
+    notes:['Black Pepper','Bergamot','Oud','Amber','Sandalwood'],
+    bgGrad:'linear-gradient(150deg,#F0D88A 0%,#D4A840 45%,#B88828 100%)',
+    capColor:'#D4A030',capColor2:'#B88020',bodyColor:'rgba(240,210,120,.7)',bodyShine:'rgba(255,245,200,.45)',
+    labelBg:['#F0D070','#D4A840'],labelText:'#3A2800',orbColor:'rgba(220,170,60,.45)',
+    sparkleColor:'rgba(255,230,120,.9)',floralTint:'#C89030',
+    pastel:'#FDF5DC',pastelBorder:'rgba(200,168,64,.3)'},
+  'Midnight Code':{mbtiList:['INTJ','INTP'],persona:'Strategic Mastermind',
+    desc:'Di balik keheningan malam, pikiran yang paling tajam bekerja. Midnight Code untuk jiwa yang melihat pola di balik kekacauan. Misterius, mendalam, tak tertebak.',
+    notes:['Dark Woods','Smoke','Cedarwood','Musk','Black Iris'],
+    bgGrad:'linear-gradient(150deg,#6A5898 0%,#3E2E80 45%,#1E1450 100%)',
+    capColor:'#C0C8D8',capColor2:'#A0A8B8',bodyColor:'rgba(80,55,140,.8)',bodyShine:'rgba(180,160,220,.3)',
+    labelBg:['#5A4898','#2E1E70'],labelText:'#fff',orbColor:'rgba(100,70,180,.4)',
+    sparkleColor:'rgba(180,160,255,.8)',floralTint:'#4A3888',
+    pastel:'#E8E4F5',pastelBorder:'rgba(100,80,160,.3)'},
+  'Chaos Bloom':{mbtiList:['ENFP','ENTP'],persona:'Spontaneous Inspirer',
+    desc:'Hidup adalah pesta yang belum berakhir. Chaos Bloom meledak seperti kembang api — penuh warna, penuh energi. Untuk jiwa yang percaya aturan hanyalah titik awal kreativitas.',
+    notes:['Wild Jasmine','Orange Blossom','Saffron','Patchouli','Citrus'],
+    bgGrad:'linear-gradient(150deg,#F8A050 0%,#E86820 45%,#C83800 100%)',
+    capColor:'#F09030',capColor2:'#D07010',bodyColor:'rgba(240,160,80,.65)',bodyShine:'rgba(255,220,160,.4)',
+    labelBg:['#F8A050','#E06020'],labelText:'#fff',orbColor:'rgba(230,100,40,.45)',
+    sparkleColor:'rgba(255,180,80,.9)',floralTint:'#E07020',
+    pastel:'#FFEDE0',pastelBorder:'rgba(230,100,30,.3)'},
+  'Golden Bloom':{mbtiList:['ENFJ','ESFJ','ISFJ'],persona:'Caring Host',
+    desc:'Kehangatan yang memelukmu tanpa syarat. Golden Bloom adalah parfum para penjaga — yang membuat orang lain merasa aman, dicintai, dan dihargai.',
+    notes:['Magnolia','Warm Vanilla','Ylang-ylang','Peach','White Tea'],
+    bgGrad:'linear-gradient(150deg,#F8EAB8 0%,#E4CC80 45%,#C8A848 100%)',
+    capColor:'#C8A030',capColor2:'#A88018',bodyColor:'rgba(240,215,150,.65)',bodyShine:'rgba(255,245,210,.45)',
+    labelBg:['#F0DCA0','#D8BC70'],labelText:'#3A2800',orbColor:'rgba(210,180,90,.45)',
+    sparkleColor:'rgba(255,235,150,.9)',floralTint:'#C8A040',
+    pastel:'#FDF7E4',pastelBorder:'rgba(210,185,100,.3)'},
+  'Cool Drift':{mbtiList:['ISTP','ISFP','ESTP','ESFP','ISTJ'],persona:'Independent Craftsman',
+    desc:'Bebas seperti angin yang tak bisa dipegang. Cool Drift parfum para individualis — yang menjalani hidup dengan tangan sendiri. Segar, jernih, tanpa basa-basi.',
+    notes:['Sea Breeze','Eucalyptus','Aqua Minerals','Driftwood','Light Musk'],
+    bgGrad:'linear-gradient(150deg,#9ADCF0 0%,#58B8D8 45%,#2898BA 100%)',
+    capColor:'#B0BCCA',capColor2:'#90A0B0',bodyColor:'rgba(120,200,230,.7)',bodyShine:'rgba(200,240,255,.4)',
+    labelBg:['#80CCE8','#48A8C8'],labelText:'#fff',orbColor:'rgba(80,170,210,.45)',
+    sparkleColor:'rgba(160,230,255,.9)',floralTint:'#40A8C8',
+    pastel:'#E2F4FA',pastelBorder:'rgba(80,180,220,.3)'},
+};
+const MBTI_TO_PARFUM={};
+Object.entries(PARFUMS).forEach(([n,d])=>d.mbtiList.forEach(m=>MBTI_TO_PARFUM[m]=n));
+
+// ════════ SVG BOTTLE ════════
+function makeBottleSVG(name,p,w){
+  const h=w*2.0,bw=w*.78,bh=h*.56,bx=(w-bw)/2,by=h*.34;
+  const nw=w*.33,nh=h*.12,nx=(w-nw)/2,ny=by-nh;
+  const cw=w*.4,ch=h*.1,cx=(w-cw)/2,cy=ny-ch;
+  const r=w*.065,lh=bh*.5,ly=by+bh*.21;
+  const uid=name.replace(/\s/g,'')+w;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 ${w*.07}px ${w*.16}px rgba(0,0,0,.22));overflow:visible">
   <defs>
-    <linearGradient id="g${id}" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="${c.g1}"/>
-      <stop offset="100%" stop-color="${c.g2}" stop-opacity=".85"/>
+    <linearGradient id="cap_${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${p.capColor}"/><stop offset="60%" stop-color="${p.capColor2}"/><stop offset="100%" stop-color="${p.capColor}"/>
     </linearGradient>
-    <linearGradient id="sh${id}" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="rgba(255,255,255,.55)"/>
-      <stop offset="45%" stop-color="rgba(255,255,255,.0)"/>
+    <linearGradient id="bd_${uid}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="${p.bodyColor}"/><stop offset="100%" stop-color="${p.bodyColor}" stop-opacity=".85"/>
+    </linearGradient>
+    <linearGradient id="lb_${uid}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="${p.labelBg[0]}"/><stop offset="100%" stop-color="${p.labelBg[1]}"/>
+    </linearGradient>
+    <linearGradient id="sh_${uid}" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="rgba(255,255,255,.44)"/><stop offset="50%" stop-color="rgba(255,255,255,0)"/>
     </linearGradient>
   </defs>
-  <rect x="75" y="44" width="50" height="14" rx="7" fill="${c.cap}"/>
-  <rect x="85" y="55" width="30" height="27" rx="4" fill="${c.neck}"/>
-  <rect x="50" y="79" width="100" height="198" rx="17" fill="${c.body}"/>
-  <rect x="58" y="87" width="84" height="182" rx="13" fill="url(#g${id})"/>
-  <rect x="58" y="87" width="30" height="182" rx="13" fill="url(#sh${id})" opacity=".7"/>
-  <rect x="63" y="137" width="74" height="88" rx="9" fill="${c.lb}"/>
-  <text x="100" y="127" text-anchor="middle" font-family="Georgia,serif" font-size="7" fill="${c.t2}" letter-spacing="3" opacity=".75">SOULÉA</text>
-  <text x="100" y="163" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" fill="${c.t1}" font-style="italic">${c.n1}</text>
-  <text x="100" y="179" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" fill="${c.t1}" font-style="italic">${c.n2}</text>
-  <text x="100" y="200" text-anchor="middle" font-family="Arial,sans-serif" font-size="6.5" fill="${c.t2}" letter-spacing="1.5">${c.mb}</text>
-  <circle cx="68" cy="106" r="2.2" fill="${c.sp}" opacity=".7"/>
-  <circle cx="132" cy="100" r="1.8" fill="${c.sp}" opacity=".6"/>
-  <circle cx="136" cy="252" r="2" fill="${c.sp}" opacity=".5"/>
-  <circle cx="64" cy="238" r="1.5" fill="${c.sp}" opacity=".55"/>
-  <circle cx="100" cy="94" r="1.3" fill="${c.sp}" opacity=".45"/>
-  <ellipse cx="100" cy="277" rx="44" ry="5" fill="${c.g2}" opacity=".18"/>
+  <rect x="${cx+cw*.1}" y="${cy}" width="${cw*.8}" height="${ch*.6}" rx="${r*.35}" fill="url(#cap_${uid})"/>
+  <rect x="${cx}" y="${cy+ch*.3}" width="${cw}" height="${ch*.72}" rx="${r*.4}" fill="url(#cap_${uid})"/>
+  <rect x="${cx+2}" y="${cy+2}" width="${cw*.38}" height="${ch*.45}" rx="${r*.25}" fill="${p.bodyShine}" opacity=".55"/>
+  <rect x="${nx}" y="${ny}" width="${nw}" height="${nh+2}" rx="${r*.28}" fill="${p.bodyColor}"/>
+  <rect x="${nx}" y="${ny}" width="${nw*.33}" height="${nh}" rx="${r*.18}" fill="${p.bodyShine}" opacity=".48"/>
+  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="url(#bd_${uid})"/>
+  <rect x="${bx+2}" y="${by+bh*.06}" width="${bw*.21}" height="${bh*.8}" rx="${r*.38}" fill="url(#sh_${uid})"/>
+  <rect x="${bx+bw*.07}" y="${ly}" width="${bw*.86}" height="${lh}" rx="${r*.45}" fill="url(#lb_${uid})"/>
+  <rect x="${bx+bw*.07}" y="${ly}" width="${bw*.42}" height="${lh}" rx="${r*.38}" fill="rgba(255,255,255,.12)"/>
+  <text x="${bx+bw/2}" y="${ly+lh*.42}" text-anchor="middle" font-family="Georgia,serif" font-size="${w*.13}" font-style="italic" fill="${p.labelText}" opacity=".95">${name.split(' ')[0]}</text>
+  <text x="${bx+bw/2}" y="${ly+lh*.42+w*.145}" text-anchor="middle" font-family="Georgia,serif" font-size="${w*.13}" font-style="italic" fill="${p.labelText}" opacity=".95">${name.split(' ')[1]||''}</text>
+  <rect x="${bx+bw*.2}" y="${ly+lh*.72}" width="${bw*.6}" height="${lh*.2}" rx="${lh*.04}" fill="rgba(255,255,255,.22)"/>
+  <text x="${bx+bw/2}" y="${ly+lh*.84}" text-anchor="middle" font-family="Jost,sans-serif" font-size="${w*.085}" letter-spacing="2" fill="${p.labelText}" opacity=".88" font-weight="300">${p.mbtiList.slice(0,2).join(' · ')}</text>
+  <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="${r}" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1"/>
+  <ellipse cx="${bx+bw/2}" cy="${by+bh+3}" rx="${bw*.38}" ry="${bh*.022}" fill="rgba(0,0,0,.1)"/>
 </svg>`;
 }
 
-// ── DATA ──
-const PARFUMS={
-  'Dream Muse':{mbtiList:['INFP','INFJ'],persona:'Sensitive Idealist',
-    desc:'Seperti halaman buku yang belum selesai ditulis — penuh kemungkinan, penuh perasaan. Dream Muse adalah parfum untuk jiwa yang bermimpi dengan matanya terbuka, yang merasakan dunia lebih dalam dari yang terlihat.',
-    notes:['Violet','White Musk','Orris','Vetiver','Vanilla'],
-    bg:'linear-gradient(145deg,#E8DCFA 0%,#CDB8EC 55%,#A890D8 100%)',cardBg:'#EDE6F5'},
-  'Power Move':{mbtiList:['ENTJ','ESTJ'],persona:'Driven Leader',
-    desc:'Aroma ambisi yang membara. Power Move adalah parfum untuk mereka yang masuk ke ruangan dan langsung menjadi pusat gravitasi. Tegas, berkilau, tak tergoyahkan — seperti emas murni yang tak pernah pudar.',
-    notes:['Black Pepper','Bergamot','Oud','Amber','Sandalwood'],
-    bg:'linear-gradient(145deg,#F8F0C8 0%,#E8D080 55%,#D0A840 100%)',cardBg:'#FBF3DC'},
-  'Midnight Code':{mbtiList:['INTJ','INTP'],persona:'Strategic Mastermind',
-    desc:'Di balik keheningan malam, pikiran yang paling tajam bekerja. Midnight Code adalah aroma bagi jiwa yang melihat pola di balik kekacauan, yang berbicara lewat karya bukan kata-kata. Misterius, mendalam, tak tertebak.',
-    notes:['Dark Woods','Smoke','Cedarwood','Musk','Black Iris'],
-    bg:'linear-gradient(145deg,#D8D4F0 0%,#A898D8 55%,#7060B8 100%)',cardBg:'#E4E0F4'},
-  'Chaos Bloom':{mbtiList:['ENFP','ENTP'],persona:'Spontaneous Inspirer',
-    desc:'Hidup adalah pesta yang belum berakhir. Chaos Bloom meledak seperti kembang api — penuh warna, penuh energi, tak pernah sama dua kali. Untuk jiwa yang percaya aturan hanyalah titik awal kreativitas.',
-    notes:['Wild Jasmine','Orange Blossom','Saffron','Patchouli','Citrus'],
-    bg:'linear-gradient(145deg,#FEE8D0 0%,#F4A870 55%,#D86828 100%)',cardBg:'#FDE8DA'},
-  'Golden Bloom':{mbtiList:['ENFJ','ESFJ','ISFJ'],persona:'Caring Host',
-    desc:'Kehangatan yang memelukmu tanpa syarat. Golden Bloom adalah parfum para penjaga — mereka yang membuat orang lain merasa aman, dicintai, dan dihargai. Manis namun berkelas, seperti bunga yang mekar di bawah sinar emas.',
-    notes:['Magnolia','Warm Vanilla','Ylang-ylang','Peach','White Tea'],
-    bg:'linear-gradient(145deg,#FDF4D0 0%,#ECD078 55%,#C8A030 100%)',cardBg:'#FDF4DC'},
-  'Cool Drift':{mbtiList:['ISTP','ISFP','ESTP','ESFP','ISTJ'],persona:'Independent Craftsman',
-    desc:'Bebas seperti angin yang tak bisa dipegang. Cool Drift adalah parfum para individualis — yang menjalani hidup dengan tangan mereka sendiri, yang bicara lewat aksi bukan janji. Segar, jernih, dan tanpa basa-basi.',
-    notes:['Sea Breeze','Eucalyptus','Aqua Minerals','Driftwood','Light Musk'],
-    bg:'linear-gradient(145deg,#CCE8F8 0%,#78C4E0 55%,#3090B8 100%)',cardBg:'#D8EEF5'}
-};
+// ════════ FLORAL SVG ════════
+function makeFloral(color,sz=120){
+  return `<svg width="${sz}" height="${sz}" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+    <g fill="${color}" opacity=".8">
+      <circle cx="80" cy="80" r="7"/>
+      ${[0,40,80,120,160,200,240,280,320].map(a=>`<ellipse cx="80" cy="80" rx="5.5" ry="26" transform="rotate(${a},80,80) translate(0,-20)" opacity=".65"/>`).join('')}
+      <path d="M80,80 Q48,48 28,58 Q50,78 80,80" opacity=".45"/>
+      <path d="M80,80 Q112,48 132,58 Q110,78 80,80" opacity=".45"/>
+      <path d="M80,80 Q58,112 48,132 Q73,116 80,80" opacity=".38"/>
+      <path d="M80,80 Q102,112 112,132 Q87,116 80,80" opacity=".38"/>
+      <circle cx="32" cy="32" r="4" opacity=".45"/>
+      ${[0,60,120,180,240,300].map(a=>`<ellipse cx="32" cy="32" rx="2.5" ry="9" transform="rotate(${a},32,32) translate(0,-7)" opacity=".3"/>`).join('')}
+      <circle cx="128" cy="122" r="3.5" opacity=".4"/>
+      ${[0,60,120,180,240,300].map(a=>`<ellipse cx="128" cy="122" rx="2" ry="7.5" transform="rotate(${a},128,122) translate(0,-6)" opacity=".28"/>`).join('')}
+    </g>
+  </svg>`;
+}
 
-const MBTI_MAP={};
-Object.entries(PARFUMS).forEach(([n,d])=>d.mbtiList.forEach(m=>MBTI_MAP[m]=n));
+// ════════ SPARKLES ════════
+function makeSparkles(container,count,color){
+  container.innerHTML='';
+  for(let i=0;i<count;i++){
+    const s=document.createElement('div');
+    const sz=Math.random()*3.5+1.5;
+    s.style.cssText=`position:absolute;border-radius:50%;width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:${color||'rgba(255,255,255,.6)'};animation:sparkle ${1.5+Math.random()*2.5}s ease-in-out ${Math.random()*3}s infinite`;
+    container.appendChild(s);
+  }
+}
 
-// ── 10 QUESTIONS ──
-const QS=[
-  {t:'Setelah hari panjang yang melelahkan, cara terbaikmu memulihkan energi adalah...',
-   c:[{t:'Sendirian — istirahat, merenung, atau melakukan hobi favoritmu',d:'I'},{t:'Berkumpul dengan orang-orang — bercerita dan tertawa bersama',d:'E'}]},
-  {t:'Di acara sosial yang ramai, kamu biasanya...',
-   c:[{t:'Nyaman mengobrol dalam, tapi lebih suka kelompok kecil',d:'I'},{t:'Menikmati bertemu banyak orang baru dan jadi pusat energi ruangan',d:'E'}]},
-  {t:'Ketika membuat keputusan penting, kamu lebih mengandalkan...',
-   c:[{t:'Fakta konkret dan hal-hal yang bisa dibuktikan secara nyata',d:'S'},{t:'Intuisi dan gambaran besar yang kamu rasakan secara mendalam',d:'N'}]},
-  {t:'Kamu lebih tertarik pada...',
-   c:[{t:'Hal-hal praktis dan langkah nyata yang bisa langsung dilakukan',d:'S'},{t:'Ide-ide besar, teori, dan kemungkinan yang belum pernah dicoba',d:'N'}]},
-  {t:'Saat temanmu bercerita tentang masalah, kamu otomatis...',
-   c:[{t:'Menawarkan solusi dan langkah-langkah konkret yang bisa mereka coba',d:'T'},{t:'Mendengarkan dengan penuh empati, membuat mereka merasa dipahami',d:'F'}]},
-  {t:'Dalam mengambil keputusan, kamu lebih mengutamakan...',
-   c:[{t:'Logika dan konsekuensi paling rasional secara objektif',d:'T'},{t:'Perasaan dan dampaknya terhadap semua orang yang terlibat',d:'F'}]},
-  {t:'Soal rencana dan jadwal, kamu tipe yang...',
-   c:[{t:'Suka merencanakan jauh-jauh hari dan mematuhi deadline dengan ketat',d:'J'},{t:'Lebih suka fleksibel, bisa berubah sesuai mood dan situasi',d:'P'}]},
-  {t:'Cara kamu bekerja yang paling nyaman adalah...',
-   c:[{t:'Menyelesaikan satu hal sampai tuntas sebelum pindah ke hal berikutnya',d:'J'},{t:'Mengerjakan beberapa hal sekaligus dan beralih sesuai energi',d:'P'}]},
-  {t:'Versi liburan idealmu adalah...',
-   c:[{t:'Itinerary matang, hotel sudah booking, semua terencana dengan baik',d:'J'},{t:'Tiket saja, sisanya improvisasi — kejutan adalah bagian dari serunya',d:'P'}]},
-  {t:'Di antara kalimat ini, mana yang paling menggambarkanmu?',
-   c:[{t:'Saya berkembang dalam kedalaman — sedikit hubungan tapi sangat bermakna',d:'I'},{t:'Saya berkembang dalam koneksi — semakin banyak orang, semakin hidup rasanya',d:'E'}]}
+// ════════ RENDER HERO VISUAL ════════
+function renderHeroVisual(){
+  const wrap=document.getElementById('hv-bottles');
+  if(!wrap)return;
+  wrap.innerHTML='';
+  // Responsive bottle size
+  const isMob=window.innerWidth<768;
+  const bsz=isMob?42:62;
+  Object.entries(PARFUMS).forEach(([name,p])=>{
+    const d=document.createElement('div');
+    d.className='hv-bottle-item';
+    d.innerHTML=makeBottleSVG(name,p,bsz);
+    wrap.appendChild(d);
+  });
+  // Florals
+  const fc=['#9880C8','#C89030'];
+  const fl1=document.getElementById('hv-fl1');
+  const fl2=document.getElementById('hv-fl2');
+  if(fl1)fl1.innerHTML=makeFloral(fc[0],isMob?80:110);
+  if(fl2)fl2.innerHTML=makeFloral(fc[1],isMob?70:100);
+  // Sparkles
+  const sp=document.getElementById('hv-sparkles');
+  if(sp)makeSparkles(sp,isMob?14:22,'rgba(255,255,255,.65)');
+}
+
+// ════════ RENDER PARFUM GRID ════════
+function renderParfumGrid(){
+  const row=document.getElementById('parfum-row');
+  if(!row)return;
+  row.innerHTML='';
+  const isMob=window.innerWidth<768;
+  const bsz=isMob?65:78;
+  Object.entries(PARFUMS).forEach(([name,p],idx)=>{
+    const card=document.createElement('div');
+    card.className='parfum-card';
+    card.onclick=()=>startQuiz();
+    card.innerHTML=`
+      <div class="pcard-top">
+        <div class="pcard-bg"></div>
+        <div class="pcard-sparkles"></div>
+        <div class="pcard-floral pf1"></div>
+        <div class="pcard-floral pf2"></div>
+        <div class="pcard-bottle-wrap">
+          <div class="pcard-box" style="background:${p.pastel};border-color:${p.pastelBorder}">
+            <span class="pcard-box-brand">SOULÉA</span>
+            <span class="pcard-box-tag">Scent of Personality</span>
+          </div>
+          <div class="pcard-bottle">${makeBottleSVG(name,p,bsz)}</div>
+        </div>
+      </div>
+      <div class="parfum-card-body">
+        <h3>${name}</h3>
+        <span class="card-persona">${p.persona}</span>
+        <p class="card-desc">${p.desc.substring(0,100)}...</p>
+        <div class="card-mbti-list">${p.mbtiList.map(m=>`<span class="mtag">${m}</span>`).join('')}</div>
+      </div>`;
+    card.querySelector('.pcard-bg').style.background=p.bgGrad;
+    makeSparkles(card.querySelector('.pcard-sparkles'),10,p.sparkleColor);
+    const pf1=card.querySelector('.pf1');pf1.style.cssText=`top:-8%;left:-6%;width:75px;animation:fsway 10s ease-in-out ${idx*.3}s infinite`;pf1.innerHTML=makeFloral(p.floralTint,75);
+    const pf2=card.querySelector('.pf2');pf2.style.cssText=`bottom:-8%;right:-6%;width:65px;animation:fsway 12s ease-in-out ${idx*.3+1}s infinite reverse`;pf2.innerHTML=makeFloral(p.floralTint,65);
+    row.appendChild(card);
+  });
+  // Scroll dots (mobile only)
+  renderScrollDots();
+}
+
+function renderScrollDots(){
+  const dotsEl=document.getElementById('scroll-dots');
+  const scrollEl=document.getElementById('parfum-scroll');
+  if(!dotsEl||!scrollEl)return;
+  const n=Object.keys(PARFUMS).length;
+  dotsEl.innerHTML=Array.from({length:n},(_,i)=>`<div class="sdot${i===0?' active':''}" data-i="${i}"></div>`).join('');
+  const cards=scrollEl.querySelectorAll('.parfum-card');
+  scrollEl.addEventListener('scroll',()=>{
+    if(!cards.length)return;
+    const cw=cards[0].offsetWidth+12;
+    const idx=Math.round(scrollEl.scrollLeft/cw);
+    dotsEl.querySelectorAll('.sdot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  },{passive:true});
+}
+
+// ════════ QUIZ DATA ════════
+const QUESTIONS=[
+  {text:'Setelah hari yang panjang, apa yang paling mengisi ulang energimu?',choices:[{t:'Waktu sendiri — merenung, membaca, atau sekadar hening',dim:'I'},{t:'Kumpul bareng orang-orang, berbagi cerita dan tertawa',dim:'E'}]},
+  {text:'Dalam membuat keputusan besar, kamu lebih andalkan...',choices:[{t:'Fakta, data, dan hal-hal yang bisa dibuktikan nyata',dim:'S'},{t:'Intuisi dan gambaran besar yang kamu rasakan mendalam',dim:'N'}]},
+  {text:'Ketika temanmu curhat masalah, kamu otomatis...',choices:[{t:'Langsung kasih solusi praktis dan langkah nyata',dim:'T'},{t:'Fokus mendengarkan dan membuat mereka merasa dipahami',dim:'F'}]},
+  {text:'Soal rencana dan jadwal, kamu tipe yang...',choices:[{t:'Suka planning jauh-jauh hari, deadline itu sacred',dim:'J'},{t:'Lebih fleksibel, bisa berubah sesuai situasi dan mood',dim:'P'}]},
+  {text:'Di pesta atau acara ramai, kamu biasanya...',choices:[{t:'Lebih nyaman mengobrol dalam, satu-dua orang saja',dim:'I'},{t:'Aktif kenalan, pindah-pindah grup, jadi pusat energi',dim:'E'}]},
+  {text:'Kamu lebih tertarik pada...',choices:[{t:'Hal konkret yang bisa langsung dipraktikkan',dim:'S'},{t:'Ide-ide abstrak dan kemungkinan yang belum terbatas',dim:'N'}]},
+  {text:'Kamu lebih bangga dikenal sebagai orang yang...',choices:[{t:'Jujur dan adil, meski terkadang terasa tegas',dim:'T'},{t:'Hangat dan empatik, selalu peka pada perasaan orang',dim:'F'}]},
+  {text:'Ruang kamarmu biasanya...',choices:[{t:'Rapi dan tertata — ada tempat untuk segalanya',dim:'J'},{t:'Kreatif dan "hidup" — mungkin berantakan tapi kamu tahu di mana semuanya',dim:'P'}]},
+  {text:'Saat belajar hal baru, kamu lebih suka...',choices:[{t:'Langsung coba dan praktik, belajar dari pengalaman nyata',dim:'S'},{t:'Pahami dulu konsepnya secara mendalam sebelum mencoba',dim:'N'}]},
+  {text:'Kalimat mana yang paling menggambarkanmu?',choices:[{t:'Saya lebih suka sedikit teman tapi hubungan yang sangat dalam',dim:'I'},{t:'Saya berkembang dan bersinar saat dikelilingi banyak orang',dim:'E'}]},
 ];
 
-// ── QUIZ STATE ──
-let curQ=0,ans=[];
+let currentQ=0,answers=[];
 
-function calcMBTI(a){
+function computeMBTI(ans){
   const c={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-  a.forEach(d=>c[d]=(c[d]||0)+1);
+  ans.forEach(d=>{if(d)c[d]=(c[d]||0)+1});
   return(c.E>=c.I?'E':'I')+(c.S>=c.N?'S':'N')+(c.T>=c.F?'T':'F')+(c.J>=c.P?'J':'P');
 }
 
-function renderQ(){
-  const q=QS[curQ],sel=ans[curQ];
-  document.getElementById('quiz-card-wrap').innerHTML=`
-    <div class="question-card">
-      <span class="q-num">Pertanyaan ${curQ+1} dari ${QS.length}</span>
-      <p class="q-text">${q.t}</p>
+function renderQuestion(){
+  const q=QUESTIONS[currentQ],sel=answers[currentQ];
+  document.getElementById('qcard-wrap').innerHTML=`
+    <div class="qcard">
+      <span class="qnum">Pertanyaan ${currentQ+1} dari ${QUESTIONS.length}</span>
+      <p class="qtext">${q.text}</p>
       <div class="choices">
-        ${q.c.map((ch,i)=>`<button class="choice-btn${sel===ch.d?' selected':''}" onclick="pick('${ch.d}')">
-          <span class="choice-letter">${String.fromCharCode(65+i)}</span><span>${ch.t}</span>
-        </button>`).join('')}
+        ${q.choices.map((c,i)=>`<button class="choice-btn${sel===c.dim?' selected':''}" onclick="selectChoice('${c.dim}',${i})">
+          <span class="cletter">${String.fromCharCode(65+i)}</span><span>${c.t}</span></button>`).join('')}
       </div>
     </div>`;
-  document.getElementById('prog-num').textContent=`${curQ+1} / ${QS.length}`;
-  document.getElementById('prog-bar').style.width=`${((curQ+1)/QS.length)*100}%`;
-  document.getElementById('btn-back').disabled=curQ===0;
-  document.getElementById('btn-next').textContent=curQ===QS.length-1?'Lihat Hasilku ✦':'Selanjutnya →';
+  document.getElementById('prog-num').textContent=`${currentQ+1} / ${QUESTIONS.length}`;
+  document.getElementById('pbar').style.width=`${((currentQ+1)/QUESTIONS.length)*100}%`;
+  document.getElementById('btn-back').disabled=currentQ===0;
+  document.getElementById('btn-next').textContent=currentQ===QUESTIONS.length-1?'Lihat Hasilku ✦':'Selanjutnya →';
 }
 
-function pick(d){
-  ans[curQ]=d;
+function selectChoice(dim,clickedIdx){
+  answers[currentQ]=dim;
   document.querySelectorAll('.choice-btn').forEach((btn,i)=>{
-    btn.classList.toggle('selected',QS[curQ].c[i].d===d);
+    const isDim=QUESTIONS[currentQ].choices[i].dim===dim;
+    btn.classList.toggle('selected',isDim);
+    btn.querySelector('.cletter').style.borderColor=isDim?'var(--army)':'';
+    btn.querySelector('.cletter').style.color=isDim?'var(--army)':'';
   });
 }
 
 function quizNext(){
-  if(!ans[curQ]){
-    document.querySelectorAll('.choice-btn').forEach(b=>{b.style.outline='1px solid rgba(74,94,69,.6)';setTimeout(()=>b.style.outline='',700)});
+  if(!answers[currentQ]){
+    document.querySelectorAll('.choice-btn').forEach(b=>{b.style.outline='1.5px solid rgba(200,100,80,.5)';setTimeout(()=>b.style.outline='',700)});
     return;
   }
-  if(curQ<QS.length-1){curQ++;renderQ();document.querySelector('.quiz-container').scrollIntoView({behavior:'smooth',block:'start'});}
+  if(currentQ<QUESTIONS.length-1){currentQ++;renderQuestion();window.scrollTo({top:0,behavior:'smooth'});}
   else showResult();
 }
-function quizBack(){if(curQ>0){curQ--;renderQ();}}
-function resetQuiz(){curQ=0;ans=[];renderQ();}
+function quizBack(){if(currentQ>0){currentQ--;renderQuestion();}}
+function resetQuiz(){currentQ=0;answers=[];}
 
+// ════════ RESULT ════════
 function showResult(){
-  const mbti=calcMBTI(ans);
-  const pname=MBTI_MAP[mbti]||'Dream Muse';
+  const mbti=computeMBTI(answers);
+  const pname=MBTI_TO_PARFUM[mbti]||'Dream Muse';
   const p=PARFUMS[pname];
+  const isMob=window.innerWidth<768;
+  const bsz=isMob?90:120;
+
   document.getElementById('res-mbti').textContent=mbti;
   document.getElementById('res-type').textContent=p.persona;
   document.getElementById('res-name').innerHTML=`<em>${pname}</em>`;
   document.getElementById('res-desc').textContent=p.desc;
-  document.getElementById('res-notes').innerHTML=p.notes.map(n=>`<span class="note-tag">${n}</span>`).join('');
-  document.getElementById('res-bg').style.background=p.bg;
-  document.getElementById('res-bottle-name').textContent=pname;
-  document.getElementById('res-circle').textContent=mbti;
-  document.getElementById('res-bottle-svg').innerHTML=bottleSVG(pname,200);
+  document.getElementById('res-notes').innerHTML=p.notes.map(n=>`<span class="ntag">${n}</span>`).join('');
+  document.getElementById('rr-bg').style.background=p.bgGrad;
+  document.getElementById('rr-orb').style.background=`radial-gradient(circle,${p.orbColor} 0%,transparent 70%)`;
+  document.getElementById('rr-ghost').textContent=pname.charAt(0);
+  document.getElementById('rr-bottle-svg').innerHTML=makeBottleSVG(pname,p,bsz);
+  document.getElementById('rr-pname').textContent=pname;
+  document.getElementById('rr-circle').textContent=mbti;
+  document.getElementById('rr-fl1').innerHTML=makeFloral(p.floralTint,isMob?100:140);
+  document.getElementById('rr-fl2').innerHTML=makeFloral(p.floralTint,isMob?90:120);
+
   const others=Object.entries(PARFUMS).filter(([n])=>n!==pname).slice(0,3);
-  document.getElementById('other-grid').innerHTML=others.map(([n,d])=>`
-    <div class="other-card">
-      <div class="other-card-top" style="background:${d.bg}">${bottleSVG(n,58)}</div>
-      <div class="other-card-body"><h4>${n}</h4><span>${d.mbtiList.join(' · ')}</span></div>
+  document.getElementById('other-row').innerHTML=others.map(([n,op])=>`
+    <div class="ocard">
+      <div class="ocard-top" style="background:${op.bgGrad}">
+        <div style="position:absolute;inset:0;opacity:.18;pointer-events:none">${makeFloral(op.floralTint,100)}</div>
+        <span class="ocard-name">${n}</span>
+      </div>
+      <div class="ocard-body"><h4>${n}</h4><span>${op.mbtiList.join(', ')}</span></div>
     </div>`).join('');
+
   showPage('result');
 }
 
 function shareResult(){
   const mbti=document.getElementById('res-mbti').textContent;
-  const name=document.getElementById('res-bottle-name').textContent;
-  const txt=`Tipe MBTI-ku ${mbti} dan parfum Souléa untukku adalah "${name}"! ✨ Temukan parfum kepribadianmu juga 🌿`;
-  if(navigator.share)navigator.share({title:'Souléa',text:txt,url:window.location.href});
-  else{navigator.clipboard?.writeText(txt);alert('Teks disalin ke clipboard!');}
+  const name=document.getElementById('rr-pname').textContent;
+  const text=`Tipe MBTI-ku ${mbti} dan parfum Souléa untukku adalah ${name}! Cari tahu parfum kepribadianmu di Souléa 🌸`;
+  if(navigator.share)navigator.share({title:'Souléa',text,url:window.location.href});
+  else{navigator.clipboard?.writeText(text);alert('Teks disalin! Bagikan ke teman-temanmu.');}
 }
 
-function closeShop(e){if(e.target.id==='shop-modal')document.getElementById('shop-modal').classList.remove('open');}
-
-function renderGrid(){
-  const grid=document.getElementById('parfum-grid');
-  if(!grid)return;
-  grid.innerHTML=Object.entries(PARFUMS).map(([name,p])=>`
-    <div class="parfum-card" onclick="showPage('quiz');resetQuiz()">
-      <div class="parfum-card-img" style="background:${p.cardBg}">${bottleSVG(name,130)}</div>
-      <div class="parfum-card-body">
-        <h3>${name}</h3>
-        <span class="card-persona">${p.persona}</span>
-        <p class="card-desc">${p.desc.substring(0,108)}…</p>
-        <div class="card-mbti-list">${p.mbtiList.map(m=>`<span class="mbti-tag">${m}</span>`).join('')}</div>
-      </div>
-    </div>`).join('');
-}
-
-function renderHeroBottle(){
-  const el=document.getElementById('hero-bottle-main');
-  if(el){
-    const svg=bottleSVG('Dream Muse',260);
-    el.innerHTML=`<div style="filter:drop-shadow(0 20px 40px rgba(74,94,69,.2));animation:floatBottle 5s ease-in-out infinite">${svg}</div>`;
-  }
-}
-
+// ════════ NAVIGATION ════════
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  if(name==='home'){renderGrid();renderHeroBottle();}
+  window.scrollTo({top:0,behavior:'instant'});
+  if(name==='home'){renderHeroVisual();renderParfumGrid();}
+  if(name==='quiz')renderQuestion();
 }
-
-function scrollToParfum(){
+function startQuiz(){showPage('quiz');resetQuiz();renderQuestion();}
+function scrollToKoleksi(){
   showPage('home');
-  setTimeout(()=>document.getElementById('koleksi')?.scrollIntoView({behavior:'smooth'}),150);
+  setTimeout(()=>document.getElementById('koleksi')?.scrollIntoView({behavior:'smooth'}),120);
 }
 
-renderGrid();
-renderHeroBottle();
+// ════════ MOBILE NAV ════════
+function toggleMenu(){
+  const h=document.getElementById('hamburger');
+  const m=document.getElementById('mobile-menu');
+  h.classList.toggle('open');m.classList.toggle('open');
+  document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+}
+function closeMenu(){
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// ════════ DESKTOP NAV SHOW ════════
+function checkDesktop(){
+  const desktopLinks=document.querySelector('.nav-desktop-links');
+  const hamburger=document.getElementById('hamburger');
+  const quizBtn=document.querySelector('.nav-quiz-btn');
+  if(window.innerWidth>=768){
+    if(desktopLinks)desktopLinks.style.display='flex';
+    if(hamburger)hamburger.style.display='none';
+    if(quizBtn)quizBtn.style.display='none';
+  } else {
+    if(desktopLinks)desktopLinks.style.display='none';
+    if(hamburger)hamburger.style.display='flex';
+    if(quizBtn)quizBtn.style.display='flex';
+  }
+}
+window.addEventListener('resize',()=>{checkDesktop();});
+checkDesktop();
+
+// ════════ INIT ════════
+renderHeroVisual();
+renderParfumGrid();
 </script>
 </body>
 </html>
